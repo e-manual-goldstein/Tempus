@@ -162,5 +162,20 @@ texture = ExtResource( 4 )
 
 [node name="Balls" type="Node" parent="."]
 
-[node name="Ball" parent="Balls" instance=ExtResource( 5 )]
+[node name="CueBall" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 235, 441 )
+
+[node name="Red" parent="Balls" instance=ExtResource( 5 )]
+position = Vector2( 202, 489 )
+IsCueball = false
+BallType = 1
+
+[node name="Orange" parent="Balls" instance=ExtResource( 5 )]
+position = Vector2( 122, 448 )
+IsCueball = false
+BallType = 2
+
+[node name="Yellow" parent="Balls" instance=ExtResource( 5 )]
+position = Vector2( 331, 440 )
+IsCueball = false
+BallType = 3
