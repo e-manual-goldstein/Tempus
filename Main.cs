@@ -9,6 +9,7 @@ public class Main : Node2D
 	public static bool Started;
 
 	private Dictionary<BallType, int> _carams;
+	private List<Ball> _pocketsThisShot = new List<Ball>();
 
 	private Balls _balls;
 
@@ -18,12 +19,13 @@ public class Main : Node2D
 		_balls = GetChildren().OfType<Balls>().Single();
 	}
 
-
 	// Declare member variables here. Examples:
 	// private int a = 2;
 	// private string b = "text";
 	public float Score;
-	
+
+	public int TurnScore => Math.Max(0, _carams.Values.Sum() - 1) + _pocketsThisShot.Sum(b => (int)b.BallType);
+	public int ShotScore { get; set; }
 	public void NewGame()
 	{
 		Started = true;
@@ -46,10 +48,23 @@ public class Main : Node2D
 
 	public void ShotEnded()
 	{
-		var shotScore = Math.Max(0, _carams.Values.Sum() - 1);
-		ResetCarams();
-		Score += shotScore;
+		var shotScore = TurnScore;
+		ShotScore += shotScore;
+		ResetPocketed();
 		GetNode<HUD>("HUD").UpdateScore(Score);
+	}
+
+	private void ResetPocketed()
+	{
+		foreach (var ball in _pocketsThisShot)
+		{
+			ball.Reset();
+		};
+	}
+
+	public void TurnEnded()
+	{
+		ResetShot();
 	}
 
 	private void ResetCarams()
@@ -67,5 +82,45 @@ public class Main : Node2D
 	private Dictionary<BallType, int> BaseCarams()
 	{
 		return Enum.GetValues(typeof(BallType)).OfType<BallType>().ToDictionary(d => d, e => 0);
+	}
+
+	private void BallPocketed(Ball ball)
+	{
+		GD.Print("Pocketed");
+		switch (ball.BallType)
+		{
+			case BallType.White:
+				ResetShot();
+				break;
+			case BallType.Yellow:
+			case BallType.Red:
+			case BallType.Orange:
+				PocketBall(ball);
+				break;
+			default:
+				break;
+		}
+		//ResetBall(ball);
+	}
+
+	private void PocketBall(Ball ball)
+	{
+		UpdateTurnScore(ball);
+		ball.IsPocketed = true;
+		ball.Visible = false;
+		ball.Stop();
+		//UpdateTurnScore(ball);
+	}
+
+	private void UpdateTurnScore(Ball ball)
+	{
+		_pocketsThisShot.Add(ball);
+		GD.Print($"Updating Turn Score: {TurnScore}");
+	}
+
+	private void ResetShot()
+	{
+		ResetCarams();
+		_pocketsThisShot.Clear();
 	}
 }

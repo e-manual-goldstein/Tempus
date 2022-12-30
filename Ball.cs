@@ -16,12 +16,18 @@ public class Ball : RigidBody2D
 	[Export]
 	public bool IsCueball { get; set; }
 
+	public bool IsPocketed { get; set; }
+
 	[Export]
 	public BallType BallType { get; set; }
+
+	public Vector2 StartPosition { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		StartPosition = Position;
+		GD.Print($"BallType: {BallType}");
 		var texture = GD.Load<Texture>($"res://assets/ball{BallType}_10.png");
 		var sprite = GetChildren().OfType<Sprite>().Single();
 		sprite.Texture = texture;		
@@ -35,13 +41,7 @@ public class Ball : RigidBody2D
 			{
 				GD.Print("Shot Taken");
 				EmitSignal("ShotTaken");
-				LinearVelocity = new Vector2(eventMouseButton.Position - Position);
-//				GD.Print($"Cueball Position = {Position}");
-//				GD.Print($"Click Position = {eventMouseButton.Position}");
-//				GD.Print($"Linear Velocity = {LinearVelocity}");
-//				GD.Print($"Linear Speed = {LinearVelocity.Length()}");
-//				GD.Print($"Linear Speed Normalised = {LinearVelocity.Normalized()}");
-				//LinearVelocity.
+				LinearVelocity = new Vector2(eventMouseButton.Position - Position);//				
 			}
 		}
 	}
@@ -70,11 +70,27 @@ public class Ball : RigidBody2D
 		{
 			EmitSignal("Caram", ball);
 		}
+		else if (body is Pocket pocket)
+		{
+			GD.Print($"{this} pocketed in {pocket}");
+			GD.Print($"{(int)BallType} points!");			
+		}
+		else
+		{
+			//GD.Print($"{this} collided with {body}");
+		}
 		//GD.Print($"{this} Collided with {body}");
 	}
 
 	public void Stop()
 	{
-		LinearVelocity = new Vector2(0,0);
+		LinearVelocity = Vector2.Zero;
+	}
+
+	internal void Reset()
+	{
+		SetDeferred("Position", StartPosition);
+		Visible = true;
+		IsPocketed = false;
 	}
 }

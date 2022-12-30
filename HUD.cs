@@ -23,10 +23,6 @@ public class HUD : CanvasLayer
 		var messageTimer = GetNode<Timer>("MessageTimer");
 		await ToSignal(messageTimer, "timeout");
 
-		var message = GetNode<Label>("Message");
-		message.Text = "Dodge the\nCreeps!";
-		message.Show();
-
 		await ToSignal(GetTree().CreateTimer(1), "timeout");
 		GetNode<Button>("StartButton").Show();
 	}

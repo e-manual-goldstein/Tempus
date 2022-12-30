@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 public enum BallType
 {
-    White,
-    Red,
-    Orange,
-    Yellow
+    White = 0,
+    Yellow = 1,
+    Red = 3,
+    Orange = 5,
 }

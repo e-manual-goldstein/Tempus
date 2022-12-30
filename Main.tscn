@@ -37,21 +37,26 @@ __meta__ = {
 
 [node name="TopRight" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 437, 44 )
+PocketLocation = 1
 
 [node name="TopLeft" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 43, 44 )
 
 [node name="MiddleRight" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 452, 360 )
+PocketLocation = 3
 
 [node name="MiddleLeft" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 28, 360 )
+PocketLocation = 2
 
 [node name="BottomRight" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 437, 678 )
+PocketLocation = 5
 
 [node name="BottomLeft" parent="Pockets" instance=ExtResource( 6 )]
 position = Vector2( 43, 678 )
+PocketLocation = 4
 
 [node name="Cushions" type="Node" parent="."]
 
@@ -168,23 +173,29 @@ texture = ExtResource( 4 )
 script = ExtResource( 8 )
 
 [node name="CueBall" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 235, 441 )
+position = Vector2( 158, 162 )
 IsCueball = true
 
 [node name="Red" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 202, 489 )
-BallType = 1
+position = Vector2( 239, 514 )
+BallType = 3
 
 [node name="Orange" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 122, 448 )
-BallType = 2
+position = Vector2( 239, 359 )
+BallType = 5
 
 [node name="Yellow" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 331, 440 )
-BallType = 3
+position = Vector2( 237, 200 )
+BallType = 1
 
 [node name="HUD" parent="." instance=ExtResource( 7 )]
 
+[connection signal="BallPocketed" from="Pockets/TopRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Pockets/TopLeft" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Pockets/MiddleRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Pockets/MiddleLeft" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Pockets/BottomRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Pockets/BottomLeft" to="." method="BallPocketed"]
 [connection signal="ShotEnded" from="Balls" to="." method="ShotEnded"]
 [connection signal="Caram" from="Balls/CueBall" to="." method="Caram"]
 [connection signal="ShotTaken" from="Balls/CueBall" to="." method="ShotTaken"]
