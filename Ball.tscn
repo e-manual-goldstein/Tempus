@@ -14,8 +14,10 @@ radius = 14.0
 input_pickable = true
 physics_material_override = SubResource( 2 )
 gravity_scale = 0.0
+contacts_reported = 6
+contact_monitor = true
+linear_damp = 0.25
 script = ExtResource( 2 )
-IsCueball = true
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.19, 0.19 )
@@ -25,4 +27,3 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [connection signal="body_entered" from="." to="." method="OnCollision"]
-[connection signal="body_exited" from="." to="." method="OnCollision"]

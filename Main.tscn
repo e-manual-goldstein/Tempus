@@ -1,12 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://assets/sideCushionB.png" type="Texture" id=2]
 [ext_resource path="res://assets/endCushion.png" type="Texture" id=3]
 [ext_resource path="res://assets/sideCushionA.png" type="Texture" id=4]
 [ext_resource path="res://Ball.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Pocket.tscn" type="PackedScene" id=6]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Balls.cs" type="Script" id=8]
 
 [node name="Main" type="Node2D"]
+script = ExtResource( 1 )
 
 [node name="Floor" type="ColorRect" parent="."]
 margin_right = 480.0
@@ -161,21 +165,27 @@ scale = Vector2( 1, 0.39 )
 texture = ExtResource( 4 )
 
 [node name="Balls" type="Node" parent="."]
+script = ExtResource( 8 )
 
 [node name="CueBall" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 235, 441 )
+IsCueball = true
 
 [node name="Red" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 202, 489 )
-IsCueball = false
 BallType = 1
 
 [node name="Orange" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 122, 448 )
-IsCueball = false
 BallType = 2
 
 [node name="Yellow" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 331, 440 )
-IsCueball = false
 BallType = 3
+
+[node name="HUD" parent="." instance=ExtResource( 7 )]
+
+[connection signal="ShotEnded" from="Balls" to="." method="ShotEnded"]
+[connection signal="Caram" from="Balls/CueBall" to="." method="Caram"]
+[connection signal="ShotTaken" from="Balls/CueBall" to="." method="ShotTaken"]
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]
