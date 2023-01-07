@@ -7,7 +7,7 @@
 radius = 39.4737
 
 [node name="Pocket" type="Area2D"]
-position = Vector2( -87, -76 )
+position = Vector2( -2, 0 )
 scale = Vector2( 0.38, 0.38 )
 script = ExtResource( 2 )
 __meta__ = {

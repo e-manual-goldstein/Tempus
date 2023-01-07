@@ -27,10 +27,7 @@ public class Ball : RigidBody2D
 	public override void _Ready()
 	{
 		StartPosition = Position;
-		GD.Print($"BallType: {BallType}");
-		var texture = GD.Load<Texture>($"res://assets/ball{BallType}_10.png");
-		var sprite = GetChildren().OfType<Sprite>().Single();
-		sprite.Texture = texture;		
+		GD.Print($"BallType: {BallType}");		
 	}
 
 	public override void _Input(InputEvent @event)
@@ -89,7 +86,8 @@ public class Ball : RigidBody2D
 
 	internal void Reset()
 	{
-		SetDeferred("Position", StartPosition);
+		Stop();
+		Position = StartPosition;
 		Visible = true;
 		IsPocketed = false;
 	}

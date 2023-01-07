@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://assets/sideCushionB.png" type="Texture" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://Pocket.tscn" type="PackedScene" id=6]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Balls.cs" type="Script" id=8]
+[ext_resource path="res://assets/ballOrange_10.png" type="Texture" id=9]
+[ext_resource path="res://assets/ballWhite_10.png" type="Texture" id=10]
+[ext_resource path="res://assets/ballYellow_10.png" type="Texture" id=11]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
@@ -176,6 +179,9 @@ script = ExtResource( 8 )
 position = Vector2( 158, 162 )
 IsCueball = true
 
+[node name="Sprite" parent="Balls/CueBall" index="0"]
+texture = ExtResource( 10 )
+
 [node name="Red" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 239, 514 )
 BallType = 3
@@ -184,9 +190,15 @@ BallType = 3
 position = Vector2( 239, 359 )
 BallType = 5
 
+[node name="Sprite" parent="Balls/Orange" index="0"]
+texture = ExtResource( 9 )
+
 [node name="Yellow" parent="Balls" instance=ExtResource( 5 )]
 position = Vector2( 237, 200 )
 BallType = 1
+
+[node name="Sprite" parent="Balls/Yellow" index="0"]
+texture = ExtResource( 11 )
 
 [node name="HUD" parent="." instance=ExtResource( 7 )]
 
@@ -200,3 +212,9 @@ BallType = 1
 [connection signal="Caram" from="Balls/CueBall" to="." method="Caram"]
 [connection signal="ShotTaken" from="Balls/CueBall" to="." method="ShotTaken"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
+
+[editable path="Balls/CueBall"]
+[editable path="Balls/Red"]
+[editable path="Balls/Orange"]
+[editable path="Balls/Yellow"]
+[editable path="HUD"]
