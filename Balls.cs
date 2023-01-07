@@ -26,11 +26,19 @@ public class Balls : Node
 		{
 			if (AllBalls.Any() && AllBalls.All(b => b.LinearVelocity.Length() < 2))
 			{
+				GD.Print("Stopping all balls");
+				CallDeferred("StopAllBalls");
+				GD.PrintT(AllBalls);
 				GD.Print("Shot Ended");
-				Array.ForEach(AllBalls, b => b.Stop());
 				EmitSignal("ShotEnded");
+				
 				ShotTaken = false;
 			}
 		}
+	}
+
+	public void StopAllBalls()
+	{
+		Array.ForEach(AllBalls, b => b.Stop());
 	}
 }

@@ -4,11 +4,15 @@ using System.Linq;
 
 public class Ball : RigidBody2D
 {
+	public override string ToString()	{
+		return $"[{BallType} {Position}]";
+    }
+	
 	[Signal]
 	public delegate void SpeedChanged(float newSpeed);
 
 	[Signal]
-	public delegate void Caram(Ball ball);
+	public delegate void Carom(Ball ball);
 
 	[Signal]
 	public delegate void ShotTaken();
@@ -45,7 +49,10 @@ public class Ball : RigidBody2D
 
 	public override void _Process(float delta)
 	{
-		if (LinearVelocity.Length() < 10)
+		if (LinearVelocity == Vector2.Zero)		{
+			return;
+		}
+		else if (LinearVelocity.Length() < 10)
 		{
 			LinearDamp = 0.5f;
 		}
@@ -56,16 +63,11 @@ public class Ball : RigidBody2D
 		//EmitSignal("SpeedChanged", LinearVelocity.Length());
 	}
 
-	public override string ToString()
-	{
-		return $"{BallType}";
-	}
-
 	public void OnCollision(object body)
 	{
 		if (body is Ball ball)
 		{
-			EmitSignal("Caram", ball);
+			EmitSignal("Carom", ball);
 		}
 		else if (body is Pocket pocket)
 		{
@@ -74,21 +76,25 @@ public class Ball : RigidBody2D
 		}
 		else
 		{
-			//GD.Print($"{this} collided with {body}");
+			GD.Print($"{this} collided with {body}");
 		}
 		//GD.Print($"{this} Collided with {body}");
 	}
 
 	public void Stop()
 	{
-		LinearVelocity = Vector2.Zero;
+		GD.Print($"Stopping {this}");
+		SetDeferred("linear_velocity", Vector2.Zero);		
 	}
 
 	internal void Reset()
 	{
 		Stop();
-		Position = StartPosition;
-		Visible = true;
+		GD.Print($"Setting {this} Position to {StartPosition}");
+		Position = StartPosition;
+		//SetDeferred("position", StartPosition);
+        GD.Print($"{this} Position: {Position}");
+        Visible = true;
 		IsPocketed = false;
 	}
 }

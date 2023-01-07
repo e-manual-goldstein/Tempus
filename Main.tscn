@@ -209,7 +209,7 @@ texture = ExtResource( 11 )
 [connection signal="BallPocketed" from="Pockets/BottomRight" to="." method="BallPocketed"]
 [connection signal="BallPocketed" from="Pockets/BottomLeft" to="." method="BallPocketed"]
 [connection signal="ShotEnded" from="Balls" to="." method="ShotEnded"]
-[connection signal="Caram" from="Balls/CueBall" to="." method="Caram"]
+[connection signal="Carom" from="Balls/CueBall" to="." method="Carom"]
 [connection signal="ShotTaken" from="Balls/CueBall" to="." method="ShotTaken"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 
