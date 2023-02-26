@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static Ball;
 
-public class Main : Node2D
+public partial class Main : Node2D
 {
 	public static bool Started;
 
@@ -53,8 +53,7 @@ public class Main : Node2D
 	{
 		GD.Print("Shot Ended");        
 		CallDeferred("ResetPocketed");
-		GetNode<HUD>("HUD").UpdateScore(Score);
-		GD.PrintStack();
+		GetNode<HUD>("HUD").UpdateScore(Score);		
 	}
 
 	private void ResetPocketed()
@@ -112,7 +111,7 @@ public class Main : Node2D
 		GD.Print("Updating Turn Score");
 		UpdateShotScore(ball);
 		ball.IsPocketed = true;
-		//ball.Visible = false;
+		ball.Visible = false;
 		ball.Stop();
 		//UpdateTurnScore(ball);
 	}

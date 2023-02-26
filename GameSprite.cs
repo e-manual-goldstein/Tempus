@@ -1,6 +1,6 @@
 using System;
 
-public class GameSprite : Godot.Sprite
+public partial class GameSprite : Godot.Sprite2D
 {
 	// Declare member variables here. Examples:
 	// private int a = 2;

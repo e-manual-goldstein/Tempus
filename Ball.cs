@@ -2,20 +2,20 @@ using Godot;
 using System;
 using System.Linq;
 
-public class Ball : RigidBody2D
+public partial class Ball : RigidBody2D
 {
-	public override string ToString()	{
+	public override string ToString()	{
 		return $"[{BallType} {Position}]";
-    }
+	}
 	
 	[Signal]
-	public delegate void SpeedChanged(float newSpeed);
+	public delegate void SpeedChangedEventHandler(float newSpeed);
 
 	[Signal]
-	public delegate void Carom(Ball ball);
+	public delegate void CaromEventHandler(Ball ball);
 
 	[Signal]
-	public delegate void ShotTaken();
+	public delegate void ShotTakenEventHandler();
 
 	[Export]
 	public bool IsCueball { get; set; }
@@ -38,18 +38,18 @@ public class Ball : RigidBody2D
 	{
 		if (Main.Started && IsCueball && @event is InputEventMouseButton eventMouseButton)
 		{
-			if (eventMouseButton.ButtonIndex == 1 && eventMouseButton.IsPressed())
+			if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
 			{
 				GD.Print("Shot Taken");
-				EmitSignal("ShotTaken");
-				LinearVelocity = new Vector2(eventMouseButton.Position - Position);//				
+				EmitSignal(SignalName.ShotTaken);
+				LinearVelocity = eventMouseButton.Position - Position;				
 			}
 		}
 	}
-
-	public override void _Process(float delta)
+	
+	public override void _Process(double delta)
 	{
-		if (LinearVelocity == Vector2.Zero)		{
+		if (LinearVelocity == Vector2.Zero)		{
 			return;
 		}
 		else if (LinearVelocity.Length() < 10)
@@ -63,11 +63,11 @@ public class Ball : RigidBody2D
 		//EmitSignal("SpeedChanged", LinearVelocity.Length());
 	}
 
-	public void OnCollision(object body)
+	public void OnCollision(Node body)
 	{
 		if (body is Ball ball)
 		{
-			EmitSignal("Carom", ball);
+			EmitSignal(SignalName.Carom, ball);
 		}
 		else if (body is Pocket pocket)
 		{
@@ -91,10 +91,18 @@ public class Ball : RigidBody2D
 	{
 		Stop();
 		GD.Print($"Setting {this} Position to {StartPosition}");
-		Position = StartPosition;
-		//SetDeferred("position", StartPosition);
-        GD.Print($"{this} Position: {Position}");
-        Visible = true;
+		//Mode = ModeEnum.Static;
+		Position = StartPosition;
+		//Mode = ModeEnum.Rigid;
+		SetDeferred("position", StartPosition);
+		GD.Print($"{this} Position: {Position}");
+		Visible = true;
 		IsPocketed = false;
 	}
+
+	private void _on_body_entered(Node body)
+	{
+		// Replace with function body.
+	}
 }
+

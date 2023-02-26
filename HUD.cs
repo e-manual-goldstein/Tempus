@@ -1,11 +1,11 @@
 using Godot;
 using System;
 
-public class HUD : CanvasLayer
+public partial class HUD : CanvasLayer
 {
 
 	[Signal]
-	public delegate void StartGame();
+	public delegate void StartGameEventHandler();
 	
 	public void ShowMessage(string text)
 	{
@@ -35,7 +35,7 @@ public class HUD : CanvasLayer
 	public void OnStartButtonPressed()
 	{
 		GetNode<Button>("StartButton").Hide();
-		EmitSignal("StartGame");
+		EmitSignal(SignalName.StartGame);
 	}
 
 	public void OnMessageTimerTimeout()

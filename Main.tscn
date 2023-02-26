@@ -1,213 +1,215 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=12 format=3 uid="uid://cng0ns32toxx8"]
 
-[ext_resource path="res://Main.cs" type="Script" id=1]
-[ext_resource path="res://assets/sideCushionB.png" type="Texture" id=2]
-[ext_resource path="res://assets/endCushion.png" type="Texture" id=3]
-[ext_resource path="res://assets/sideCushionA.png" type="Texture" id=4]
-[ext_resource path="res://Ball.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Pocket.tscn" type="PackedScene" id=6]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Balls.cs" type="Script" id=8]
-[ext_resource path="res://assets/ballOrange_10.png" type="Texture" id=9]
-[ext_resource path="res://assets/ballWhite_10.png" type="Texture" id=10]
-[ext_resource path="res://assets/ballYellow_10.png" type="Texture" id=11]
+[ext_resource type="Script" path="res://Main.cs" id="1"]
+[ext_resource type="Texture2D" uid="uid://c6t7qyn1p4cen" path="res://assets/sideCushionB.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dk5rwhd7w20ok" path="res://assets/endCushion.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://4hijv0v6lvsp" path="res://assets/sideCushionA.png" id="4"]
+[ext_resource type="PackedScene" path="res://Ball.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://ctgxgccg3qtva" path="res://Pocket.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://HUD.tscn" id="7"]
+[ext_resource type="Script" path="res://Balls.cs" id="8"]
+[ext_resource type="Texture2D" uid="uid://bubd8mvebuakk" path="res://assets/ballOrange_10.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://dfx67w4twosp8" path="res://assets/ballWhite_10.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://b36ra07th5g0u" path="res://assets/ballYellow_10.png" id="11"]
 
 [node name="Main" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Floor" type="ColorRect" parent="."]
-margin_right = 480.0
-margin_bottom = 720.0
-color = Color( 0.239216, 0.129412, 0, 1 )
-__meta__ = {
-"_edit_lock_": true
-}
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.239216, 0.129412, 0, 1)
 
 [node name="Table" type="ColorRect" parent="."]
+anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 448.0
-margin_bottom = 688.0
-color = Color( 0.0431373, 0.505882, 0.0392157, 1 )
-__meta__ = {
-"_edit_lock_": true
-}
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 448.0
+offset_bottom = 688.0
+color = Color(0.0431373, 0.505882, 0.0392157, 1)
 
 [node name="Pockets" type="Node" parent="."]
 
-[node name="TopRight" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 437, 44 )
+[node name="TopRight" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(437, 44)
 PocketLocation = 1
 
-[node name="TopLeft" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 43, 44 )
+[node name="TopLeft" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(43, 44)
 
-[node name="MiddleRight" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 452, 360 )
+[node name="MiddleRight" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(452, 360)
 PocketLocation = 3
 
-[node name="MiddleLeft" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 28, 360 )
+[node name="MiddleLeft" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(28, 360)
 PocketLocation = 2
 
-[node name="BottomRight" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 437, 678 )
+[node name="BottomRight" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(437, 678)
 PocketLocation = 5
 
-[node name="BottomLeft" parent="Pockets" instance=ExtResource( 6 )]
-position = Vector2( 43, 678 )
+[node name="BottomLeft" parent="Pockets" instance=ExtResource("6")]
+position = Vector2(43, 678)
 PocketLocation = 4
 
 [node name="Cushions" type="Node" parent="."]
 
 [node name="TopCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 240, 32 )
-__meta__ = {
-"_edit_group_": true
-}
+position = Vector2(240, 32)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/TopCushion"]
 visible = false
-position = Vector2( -240, -32 )
-polygon = PoolVector2Array( 56, 16, 424, 16, 424, 24, 408, 48, 72, 48, 56, 24 )
+position = Vector2(-240, -32)
+polygon = PackedVector2Array(56, 16, 424, 16, 424, 24, 408, 48, 72, 48, 56, 24)
 
-[node name="Sprite" type="Sprite" parent="Cushions/TopCushion"]
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/TopCushion"]
 rotation = 1.5708
-scale = Vector2( 0.878845, 0.531691 )
-texture = ExtResource( 3 )
+scale = Vector2(0.878845, 0.531691)
+texture = ExtResource("3")
 
 [node name="BottomCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 240, 688 )
+position = Vector2(240, 688)
 rotation = 3.14159
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/BottomCushion"]
 visible = false
-position = Vector2( -240, -32 )
-polygon = PoolVector2Array( 56, 16, 424, 16, 424, 24, 408, 48, 72, 48, 56, 24 )
+position = Vector2(-240, -32)
+polygon = PackedVector2Array(56, 16, 424, 16, 424, 24, 408, 48, 72, 48, 56, 24)
 
-[node name="Sprite" type="Sprite" parent="Cushions/BottomCushion"]
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/BottomCushion"]
 rotation = 1.5708
-scale = Vector2( 0.878845, 0.531691 )
-texture = ExtResource( 3 )
+scale = Vector2(0.878845, 0.531691)
+texture = ExtResource("3")
 
 [node name="TopRightCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 448, 243 )
+position = Vector2(448, 243)
 rotation = 1.5708
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/TopRightCushion"]
 visible = false
-position = Vector2( -214.746, -32.0001 )
-scale = Vector2( 0.7, 1 )
-polygon = PoolVector2Array( 49, 17, 448.208, 15.9997, 448.208, 24.9997, 446.78, 47.9997, 324.51, 47.7125, 63, 47, 50, 26 )
+position = Vector2(-214.746, -32.0001)
+scale = Vector2(0.7, 1)
+polygon = PackedVector2Array(49, 17, 448.208, 15.9997, 448.208, 24.9997, 446.78, 47.9997, 324.51, 47.7125, 63, 47, 50, 26)
 
-[node name="Sprite" type="Sprite" parent="Cushions/TopRightCushion"]
-position = Vector2( -40.8304, -1.78475e-06 )
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/TopRightCushion"]
+position = Vector2(-40.8304, -1.78475e-06)
 rotation = 1.5708
-scale = Vector2( 1, 0.39 )
-texture = ExtResource( 4 )
+scale = Vector2(1, 0.39)
+texture = ExtResource("4")
 
 [node name="TopLeftCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 32, 243 )
+position = Vector2(32, 243)
 rotation = 1.5708
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/TopLeftCushion"]
 visible = false
-position = Vector2( -227.603, -32 )
-scale = Vector2( 0.7, 1 )
-polygon = PoolVector2Array( 80.8613, 16.0006, 463.718, 16.9997, 465.147, 24.9996, 466.576, 48.9996, 66.5758, 49.0007, 66.5758, 43.0007 )
+position = Vector2(-227.603, -32)
+scale = Vector2(0.7, 1)
+polygon = PackedVector2Array(80.8613, 16.0006, 463.718, 16.9997, 465.147, 24.9996, 466.576, 48.9996, 66.5758, 49.0007, 66.5758, 43.0007)
 
-[node name="Sprite" type="Sprite" parent="Cushions/TopLeftCushion"]
-position = Vector2( -40.8304, 0.561232 )
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/TopLeftCushion"]
+position = Vector2(-40.8304, 0.561232)
 rotation = 1.5708
-scale = Vector2( 1, 0.39 )
-texture = ExtResource( 2 )
+scale = Vector2(1, 0.39)
+texture = ExtResource("2")
 
 [node name="BottomRightCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 448, 478 )
+position = Vector2(448, 478)
 rotation = 4.71239
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/BottomRightCushion"]
 visible = false
-position = Vector2( -227.603, -32 )
-scale = Vector2( 0.7, 1 )
-polygon = PoolVector2Array( 82.29, 16.0002, 465.147, 16.9999, 465.147, 25.9999, 465.147, 47.9999, 69.4329, 48.0002, 69.4329, 41.0002 )
+position = Vector2(-227.603, -32)
+scale = Vector2(0.7, 1)
+polygon = PackedVector2Array(82.29, 16.0002, 465.147, 16.9999, 465.147, 25.9999, 465.147, 47.9999, 69.4329, 48.0002, 69.4329, 41.0002)
 
-[node name="Sprite" type="Sprite" parent="Cushions/BottomRightCushion"]
-position = Vector2( -40.8304, 0.561232 )
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/BottomRightCushion"]
+position = Vector2(-40.8304, 0.561232)
 rotation = 1.5708
-scale = Vector2( 1, 0.39 )
-texture = ExtResource( 2 )
+scale = Vector2(1, 0.39)
+texture = ExtResource("2")
 
 [node name="BottomLeftCushion" type="StaticBody2D" parent="Cushions"]
-position = Vector2( 32, 478 )
+position = Vector2(32, 478)
 rotation = 4.71239
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cushions/BottomLeftCushion"]
 visible = false
-position = Vector2( -227.603, -32 )
-scale = Vector2( 0.7, 1 )
-polygon = PoolVector2Array( 69.4328, 16.0002, 466.576, 14.9999, 466.576, 22.9999, 465.147, 46.9999, 82.29, 48.0002, 69.4329, 23.0002 )
+position = Vector2(-227.603, -32)
+scale = Vector2(0.7, 1)
+polygon = PackedVector2Array(69.4328, 16.0002, 466.576, 14.9999, 466.576, 22.9999, 465.147, 46.9999, 82.29, 48.0002, 69.4329, 23.0002)
 
-[node name="Sprite" type="Sprite" parent="Cushions/BottomLeftCushion"]
-position = Vector2( -40.8304, -1.78475e-06 )
+[node name="Sprite2D" type="Sprite2D" parent="Cushions/BottomLeftCushion"]
+position = Vector2(-40.8304, -1.78475e-06)
 rotation = 1.5708
-scale = Vector2( 1, 0.39 )
-texture = ExtResource( 4 )
+scale = Vector2(1, 0.39)
+texture = ExtResource("4")
 
 [node name="Balls" type="Node" parent="."]
-script = ExtResource( 8 )
+script = ExtResource("8")
 
-[node name="CueBall" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 158, 162 )
+[node name="CueBall" parent="Balls" instance=ExtResource("5")]
+position = Vector2(158, 162)
 IsCueball = true
 
-[node name="Sprite" parent="Balls/CueBall" index="0"]
-texture = ExtResource( 10 )
+[node name="Sprite2D" parent="Balls/CueBall" index="0"]
+texture = ExtResource("10")
 
-[node name="Red" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 239, 514 )
+[node name="Red" parent="Balls" instance=ExtResource("5")]
+position = Vector2(239, 514)
 BallType = 3
 
-[node name="Orange" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 239, 359 )
+[node name="Orange" parent="Balls" instance=ExtResource("5")]
+position = Vector2(239, 359)
 BallType = 5
 
-[node name="Sprite" parent="Balls/Orange" index="0"]
-texture = ExtResource( 9 )
+[node name="Sprite2D" parent="Balls/Orange" index="0"]
+texture = ExtResource("9")
 
-[node name="Yellow" parent="Balls" instance=ExtResource( 5 )]
-position = Vector2( 237, 200 )
+[node name="Yellow" parent="Balls" instance=ExtResource("5")]
+position = Vector2(237, 200)
 BallType = 1
 
-[node name="Sprite" parent="Balls/Yellow" index="0"]
-texture = ExtResource( 11 )
+[node name="Sprite2D" parent="Balls/Yellow" index="0"]
+texture = ExtResource("11")
 
-[node name="HUD" parent="." instance=ExtResource( 7 )]
+[node name="HUD" parent="." instance=ExtResource("7")]
+
+[node name="ScoreLabel" parent="HUD" index="0"]
+anchors_preset = 10
+offset_bottom = 26.0
+grow_horizontal = 2
+
+[node name="Message" parent="HUD" index="1"]
+anchors_preset = 14
+offset_top = -13.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" parent="HUD" index="2"]
+anchors_preset = 7
+offset_top = -100.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [connection signal="BallPocketed" from="Pockets/TopRight" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/TopRight" to="Pockets/TopRight" method="_on_body_shape_entered"]
 [connection signal="BallPocketed" from="Pockets/TopLeft" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/TopLeft" to="Pockets/TopLeft" method="_on_body_shape_entered"]
 [connection signal="BallPocketed" from="Pockets/MiddleRight" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/MiddleRight" to="Pockets/MiddleRight" method="_on_body_shape_entered"]
 [connection signal="BallPocketed" from="Pockets/MiddleLeft" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/MiddleLeft" to="Pockets/MiddleLeft" method="_on_body_shape_entered"]
 [connection signal="BallPocketed" from="Pockets/BottomRight" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/BottomRight" to="Pockets/BottomRight" method="_on_body_shape_entered"]
 [connection signal="BallPocketed" from="Pockets/BottomLeft" to="." method="BallPocketed"]
+[connection signal="body_shape_entered" from="Pockets/BottomLeft" to="Pockets/BottomLeft" method="_on_body_shape_entered"]
 [connection signal="ShotEnded" from="Balls" to="." method="ShotEnded"]
 [connection signal="Carom" from="Balls/CueBall" to="." method="Carom"]
 [connection signal="ShotTaken" from="Balls/CueBall" to="." method="ShotTaken"]

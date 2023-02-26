@@ -2,14 +2,14 @@ using Godot;
 using System;
 using System.Linq;
 
-public class Balls : Node
+public partial class Balls : Node
 {
 	// Declare member variables here. Examples:
 	// private int a = 2;
 	// private string b = "text";
 
 	[Signal]
-	public delegate void ShotEnded();
+	public delegate void ShotEndedEventHandler();
 
 	public Ball[] AllBalls { get; set; }
 	
@@ -18,9 +18,10 @@ public class Balls : Node
 	public override void _Ready()
 	{
 		AllBalls = GetChildren().OfType<Ball>().ToArray();
+		
 	}
 
-	public override void _Process(float delta)
+	public override void _Process(double delta)
 	{
 		if (ShotTaken)
 		{
@@ -30,7 +31,7 @@ public class Balls : Node
 				CallDeferred("StopAllBalls");
 				GD.PrintT(AllBalls);
 				GD.Print("Shot Ended");
-				EmitSignal("ShotEnded");
+				EmitSignal(SignalName.ShotEnded);
 				
 				ShotTaken = false;
 			}
