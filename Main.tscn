@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://c6t7qyn1p4cen" path="res://assets/sideCushionB.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://dk5rwhd7w20ok" path="res://assets/endCushion.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://4hijv0v6lvsp" path="res://assets/sideCushionA.png" id="4"]
-[ext_resource type="PackedScene" path="res://Ball.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://mi1ndtaxfwjc" path="res://Ball.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://ctgxgccg3qtva" path="res://Pocket.tscn" id="6"]
-[ext_resource type="PackedScene" path="res://HUD.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://muuig2j53p5l" path="res://HUD.tscn" id="7"]
 [ext_resource type="Script" path="res://Balls.cs" id="8"]
 [ext_resource type="Texture2D" uid="uid://bubd8mvebuakk" path="res://assets/ballOrange_10.png" id="9"]
 [ext_resource type="Texture2D" uid="uid://dfx67w4twosp8" path="res://assets/ballWhite_10.png" id="10"]
@@ -196,17 +196,7 @@ position = Vector2(565, 43)
 
 [node name="HUD" parent="." instance=ExtResource("7")]
 
-[node name="ScoreLabel" parent="HUD" index="0"]
-anchors_preset = 10
-offset_left = 223.0
-offset_top = 21.0
-offset_right = -219.0
-offset_bottom = 49.0
-grow_horizontal = 2
-horizontal_alignment = 1
-
-[node name="Message" parent="HUD" index="1"]
-anchors_preset = 14
+[node name="Message" parent="HUD" index="0"]
 offset_left = 571.0
 offset_top = 72.0
 offset_right = -67.0
@@ -214,8 +204,7 @@ offset_bottom = 115.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="StartButton" parent="HUD" index="2"]
-anchors_preset = 7
+[node name="StartButton" parent="HUD" index="1"]
 offset_left = 177.0
 offset_top = -445.0
 offset_right = 357.0
@@ -223,25 +212,26 @@ offset_bottom = -345.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopRight" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/TopRight" to="Background/Border/Table/Pockets/TopRight" method="OnShapeEntered"]
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopLeft" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopLeft" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/TopLeft" to="Background/Border/Table/Pockets/TopLeft" method="OnShapeEntered"]
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/MiddleRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/MiddleRight" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/MiddleRight" to="Background/Border/Table/Pockets/MiddleRight" method="OnShapeEntered"]
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/MiddleLeft" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/MiddleLeft" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/MiddleLeft" to="Background/Border/Table/Pockets/MiddleLeft" method="OnShapeEntered"]
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/BottomRight" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/BottomRight" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomRight" to="Background/Border/Table/Pockets/BottomRight" method="OnShapeEntered"]
-[connection signal="BallPocketed" from="Background/Border/Table/Pockets/BottomLeft" to="." method="BallPocketed"]
+[connection signal="BallPocketed" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Border/Table/Pockets/BottomLeft" method="OnShapeEntered"]
 [connection signal="ShotEnded" from="Background/Border/Table/Balls" to="." method="ShotEnded"]
-[connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="." method="Carom"]
-[connection signal="ShotTaken" from="Background/Border/Table/Balls/CueBall" to="." method="ShotTaken"]
+[connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="Background/Scoreboard" method="Carom"]
+[connection signal="ShotTaken" from="Background/Border/Table/Balls/CueBall" to="Background/Border/Table/Balls" method="ShotTaken"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 
 [editable path="Background/Border/Table/Balls/CueBall"]
 [editable path="Background/Border/Table/Balls/Red"]
 [editable path="Background/Border/Table/Balls/Orange"]
 [editable path="Background/Border/Table/Balls/Yellow"]
+[editable path="Background/Scoreboard"]
 [editable path="HUD"]

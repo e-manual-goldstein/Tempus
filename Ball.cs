@@ -12,7 +12,6 @@ public partial class Ball : RigidBody2D
 	{
 		IsCueball = otherBall.IsCueball;
 		BallType = otherBall.BallType;
-		Position = otherBall.StartPosition;
 		GetChildren().OfType<Sprite2D>().First().Texture = otherBall.GetChildren().OfType<Sprite2D>().First().Texture;
 	}
 

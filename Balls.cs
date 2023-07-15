@@ -38,8 +38,15 @@ public partial class Balls : Node
 		}
 	}
 
+	private void TakeShot()
+	{
+		ShotTaken = true;
+	}
+
 	public void StopAllBalls()
 	{
 		Array.ForEach(AllBalls, b => b.Stop());
 	}
 }
+
+
