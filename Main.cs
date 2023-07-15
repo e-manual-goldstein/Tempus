@@ -17,6 +17,7 @@ public partial class Main : Node2D
 	{
 		_caroms = BaseCaroms();
 		_balls = GetChildren().OfType<Balls>().Single();
+		System.Diagnostics.Debugger.Launch();
 	}
 
 	// Declare member variables here. Examples:
@@ -51,7 +52,6 @@ public partial class Main : Node2D
 
 	public void ShotEnded()
 	{
-		GD.Print("Shot Ended");        
 		CallDeferred("ResetPocketed");
 		GetNode<HUD>("HUD").UpdateScore(Score);		
 	}
@@ -60,9 +60,20 @@ public partial class Main : Node2D
 	{
 		foreach (var ball in _pocketsThisShot)
 		{
-			GD.Print($"Resetting {ball}");
-			ball.Reset();
+			ResetBall(ball);
 		};
+		_pocketsThisShot.Clear();
+	}
+
+	private void ResetBall(Ball ball)
+	{
+		GD.Print($"Resetting {ball}");
+		PackedScene ballScene = (PackedScene)ResourceLoader.Load("res://Ball.tscn");
+		var replacementBall = ballScene.Instantiate() as Ball;
+		replacementBall.Clone(ball);
+		AddChild(replacementBall);
+		RemoveChild(ball);
+		ball.QueueFree();
 	}
 
 	public void TurnEnded()
@@ -93,7 +104,7 @@ public partial class Main : Node2D
 		switch (ball.BallType)
 		{
 			case BallType.White:
-				ResetShot();
+				PocketCueBall(ball);
 				break;
 			case BallType.Yellow:
 			case BallType.Red:
@@ -111,9 +122,18 @@ public partial class Main : Node2D
 		GD.Print("Updating Turn Score");
 		UpdateShotScore(ball);
 		ball.IsPocketed = true;
-		ball.Visible = false;
 		ball.Stop();
+		RemoveChild(ball);//ball.Visible = false;
 		//UpdateTurnScore(ball);
+	}
+
+	private void PocketCueBall(Ball ball)
+	{
+		ball.IsPocketed = true;
+		ball.Stop();
+		RemoveChild(ball);
+		ResetCaroms();
+		UpdateShotScore(ball);
 	}
 
 	private void UpdateShotScore(Ball ball)

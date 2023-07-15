@@ -8,6 +8,14 @@ public partial class Ball : RigidBody2D
 		return $"[{BallType} {Position}]";
 	}
 	
+	public void Clone(Ball otherBall)
+	{
+		IsCueball = otherBall.IsCueball;
+		BallType = otherBall.BallType;
+		Position = otherBall.StartPosition;
+		GetChildren().OfType<Sprite2D>().First().Texture = otherBall.GetChildren().OfType<Sprite2D>().First().Texture;
+	}
+
 	[Signal]
 	public delegate void SpeedChangedEventHandler(float newSpeed);
 
@@ -27,11 +35,14 @@ public partial class Ball : RigidBody2D
 
 	public Vector2 StartPosition { get; set; }
 
+	public Sprite2D Sprite { get; set; }
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		StartPosition = Position;
-		GD.Print($"BallType: {BallType}");		
+		GD.Print($"BallType: {BallType}");
+		Sprite = GetChildren().OfType<Sprite2D>().First();
 	}
 
 	public override void _Input(InputEvent @event)
@@ -49,7 +60,8 @@ public partial class Ball : RigidBody2D
 	
 	public override void _Process(double delta)
 	{
-		if (LinearVelocity == Vector2.Zero)		{
+		if (LinearVelocity == Vector2.Zero)	
+		{
 			return;
 		}
 		else if (LinearVelocity.Length() < 10)
@@ -89,7 +101,7 @@ public partial class Ball : RigidBody2D
 
 	internal void Reset()
 	{
-		Stop();
+		//Stop();
 		GD.Print($"Setting {this} Position to {StartPosition}");
 		//Mode = ModeEnum.Static;
 		Position = StartPosition;

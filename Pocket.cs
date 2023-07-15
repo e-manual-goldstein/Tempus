@@ -15,17 +15,7 @@ public partial class Pocket : Area2D
 		
 	}
 
-	public void ShapeEntered(Rid body_rid, Node2D body, long body_shape_index, long local_shape_index)
-	{
-		// Replace with function body.
-		GD.Print($"{body} entered {this}");
-		if (body is Ball ball)
-		{
-			EmitSignal(SignalName.BallPocketed, ball);
-		}
-	}
-
-	private void _on_body_shape_entered(Rid body_rid, Node2D body, long body_shape_index, long local_shape_index)
+	private void OnShapeEntered(Rid body_rid, Node2D body, long body_shape_index, long local_shape_index)
 	{
 		// Replace with function body.
 		GD.Print($"{body} entered {this}");
@@ -40,5 +30,4 @@ public partial class Pocket : Area2D
 		return $"{PocketLocation}";
 	}
 }
-
 
