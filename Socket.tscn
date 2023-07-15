@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba2bj8rfc8mdj"]
+
+[ext_resource type="Texture2D" uid="uid://bu8uwpi2i68th" path="res://assets/pocketHole.png" id="1_erdxo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jutx5"]
+radius = 15.0
+
+[node name="Socket" type="Area2D"]
+
+[node name="Area2D" type="Sprite2D" parent="."]
+scale = Vector2(0.202703, 0.202703)
+texture = ExtResource("1_erdxo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jutx5")
+debug_color = Color(0.0862745, 0.384314, 0.580392, 0.509804)
