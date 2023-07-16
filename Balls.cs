@@ -38,7 +38,7 @@ public partial class Balls : Node
 		}
 	}
 
-	private void TakeShot()
+	public void TakeShot()
 	{
 		ShotTaken = true;
 	}

@@ -7,13 +7,6 @@ public partial class Ball : RigidBody2D
 	public override string ToString()	{
 		return $"[{BallType} {Position}]";
 	}
-	
-	public void Clone(Ball otherBall)
-	{
-		IsCueball = otherBall.IsCueball;
-		BallType = otherBall.BallType;
-		GetChildren().OfType<Sprite2D>().First().Texture = otherBall.GetChildren().OfType<Sprite2D>().First().Texture;
-	}
 
 	[Signal]
 	public delegate void SpeedChangedEventHandler(float newSpeed);
@@ -90,6 +83,13 @@ public partial class Ball : RigidBody2D
 			GD.Print($"{this} collided with {body}");
 		}
 		//GD.Print($"{this} Collided with {body}");
+	}
+
+	public void Clone(Ball otherBall)
+	{
+		IsCueball = otherBall.IsCueball;
+		BallType = otherBall.BallType;
+		GetNode<Sprite2D>("Sprite2D").Texture = otherBall.GetNode<Sprite2D>("Sprite2D").Texture;
 	}
 
 	public void Stop()
