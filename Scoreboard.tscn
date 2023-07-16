@@ -14,10 +14,10 @@ color = Color(0.301961, 0.145098, 0.254902, 1)
 [node name="YellowSocket" parent="." instance=ExtResource("1_ujx6e")]
 position = Vector2(25, 24)
 
-[node name="OrangeSocket" parent="." instance=ExtResource("1_ujx6e")]
+[node name="RedSocket" parent="." instance=ExtResource("1_ujx6e")]
 position = Vector2(67, 24)
 
-[node name="RedSocket" parent="." instance=ExtResource("1_ujx6e")]
+[node name="OrangeSocket" parent="." instance=ExtResource("1_ujx6e")]
 position = Vector2(108, 24)
 
 [node name="Score" type="Label" parent="."]
