@@ -10,11 +10,6 @@ public partial class Pocket : Area2D
 	[Export]
 	public PocketLocation PocketLocation { get; set; }
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		
-	}
-
 	private void OnShapeEntered(Rid body_rid, Node2D body, long body_shape_index, long local_shape_index)
 	{
 		// Replace with function body.

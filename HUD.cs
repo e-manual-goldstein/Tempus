@@ -6,7 +6,7 @@ public partial class HUD : CanvasLayer
 
 	[Signal]
 	public delegate void StartGameEventHandler();
-	
+
 	public void ShowMessage(string text)
 	{
 		var message = GetNode<Label>("Message");

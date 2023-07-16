@@ -15,7 +15,7 @@ public partial class Scoreboard : Node2D
 	public int TurnScore { get; set; }
 	public int ShotScore => Math.Max(0, _caroms.Values.Sum() - 1) + _pocketsThisShot.Sum(b => (int)b.BallType);
 
-	// Called when the node enters the scene tree for the first time.
+   
 	public override void _Ready()
 	{
 		Debugger.Launch();
@@ -63,19 +63,19 @@ public partial class Scoreboard : Node2D
 		_caroms[ball.BallType] = 1;
 	}
 
-	private void ResetPocketed()
+	private void ResetPocketed(Balls balls)
 	{
 		foreach (var ball in _pocketsThisShot)
 		{
-			ResetBall(ball);
+			ResetBall(ball, balls);
 		};
 		_pocketsThisShot.Clear();
 	}
 
-	private void ResetBall(Ball ball)
+	private void ResetBall(Ball ball, Balls balls)
 	{
 		GD.Print($"Resetting {ball}");
-		
+		ReplaceBall(ball, balls, Balls.GetStartPosition(ball.BallType));
 	}
 
 	private void ResetCaroms()
@@ -84,10 +84,10 @@ public partial class Scoreboard : Node2D
 		_caroms = BaseCaroms();
 	}
 
-	public void ShotEnded()
+	public void ShotEnded(Balls balls)
 	{
-		CallDeferred("ResetPocketed");
-		GetNode<HUD>("HUD").UpdateScore(Score);
+		ResetPocketed(balls);
+		UpdateScore(Score);
 	}
 
 	private Dictionary<BallType, int> BaseCaroms()
@@ -98,17 +98,23 @@ public partial class Scoreboard : Node2D
 	private void PocketBall(Ball ball)
 	{
 		GD.Print("Updating Turn Score");
-		UpdateShotScore(ball);
 		ball.IsPocketed = true;
+		var replacementBall = ReplaceBall(ball, this, GetSocketLocation(ball.BallType));
+		UpdateShotScore(replacementBall);
+	}
+
+	private Ball ReplaceBall(Ball ball, Node newParent, Vector2 newLocation)
+	{
 		ball.Stop();
 		PackedScene ballScene = (PackedScene)ResourceLoader.Load("res://Ball.tscn");
 		var replacementBall = ballScene.Instantiate() as Ball;
 		replacementBall.Clone(ball);
-		replacementBall.Position = GetSocketLocation(ball.BallType);//UpdateTurnScore(ball);
-		AddChild(replacementBall);
+		replacementBall.Position = newLocation;//UpdateTurnScore(ball);
+		newParent.AddChild(replacementBall);
 		ball.Visible = false;
 		RemoveChild(ball);
 		ball.QueueFree();
+		return replacementBall;
 	}
 
 	private void PocketCueBall(Ball ball)
@@ -116,7 +122,7 @@ public partial class Scoreboard : Node2D
 		ball.IsPocketed = true;
 		ball.Stop();
 		ResetCaroms();
-		UpdateShotScore(ball);
+		//UpdateShotScore(ball);
 	}
 
 	private void BallPocketed(Ball ball)

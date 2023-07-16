@@ -5,8 +5,10 @@ using System.Linq;
 public partial class Ball : RigidBody2D
 {
 	public override string ToString()	{
-		return $"[{BallType} {Position}]";
+		return $"[{_ballId} - {BallType} {Position}]";
 	}
+
+	readonly int _ballId = Balls.BallIdCounter++;
 
 	[Signal]
 	public delegate void SpeedChangedEventHandler(float newSpeed);
@@ -25,15 +27,12 @@ public partial class Ball : RigidBody2D
 	[Export]
 	public BallType BallType { get; set; }
 
-	public Vector2 StartPosition { get; set; }
-
 	public Sprite2D Sprite { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		StartPosition = Position;
-		GD.Print($"BallType: {BallType}");
+		GD.Print($"{GetType()} ready");
 		Sprite = GetChildren().OfType<Sprite2D>().First();
 	}
 
@@ -43,7 +42,7 @@ public partial class Ball : RigidBody2D
 		{
 			if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
 			{
-				GD.Print("Shot Taken");
+				GD.Print($"Shot Taken {eventMouseButton.Position}");
 				EmitSignal(SignalName.ShotTaken);
 				LinearVelocity = eventMouseButton.Position - Position;				
 			}
@@ -89,6 +88,8 @@ public partial class Ball : RigidBody2D
 	{
 		IsCueball = otherBall.IsCueball;
 		BallType = otherBall.BallType;
+		ZIndex = otherBall.ZIndex;
+		IsPocketed = otherBall.IsPocketed;
 		GetNode<Sprite2D>("Sprite2D").Texture = otherBall.GetNode<Sprite2D>("Sprite2D").Texture;
 	}
 
@@ -101,11 +102,10 @@ public partial class Ball : RigidBody2D
 	internal void Reset()
 	{
 		//Stop();
-		GD.Print($"Setting {this} Position to {StartPosition}");
 		//Mode = ModeEnum.Static;
-		Position = StartPosition;
+		
 		//Mode = ModeEnum.Rigid;
-		SetDeferred("position", StartPosition);
+		
 		GD.Print($"{this} Position: {Position}");
 		Visible = true;
 		IsPocketed = false;

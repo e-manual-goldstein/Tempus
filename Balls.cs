@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 public partial class Balls : Node
@@ -8,17 +10,20 @@ public partial class Balls : Node
 	// private int a = 2;
 	// private string b = "text";
 
-	[Signal]
-	public delegate void ShotEndedEventHandler();
+	static Dictionary<BallType, Vector2> _startPositions;
 
-	public Ball[] AllBalls { get; set; }
-	
+	[Signal]
+	public delegate void ShotEndedEventHandler(Balls balls);
+
+	public Ball[] AllBalls => GetChildren().OfType<Ball>().ToArray();
+
+	public static int BallIdCounter;
 	public bool ShotTaken { get; set; }
-	// Called when the node enters the scene tree for the first time.
+	
 	public override void _Ready()
 	{
-		AllBalls = GetChildren().OfType<Ball>().ToArray();
-		
+		Debugger.Launch();
+		_startPositions = AllBalls.ToDictionary(d => d.BallType, r => r.Position);
 	}
 
 	public override void _Process(double delta)
@@ -31,7 +36,7 @@ public partial class Balls : Node
 				CallDeferred("StopAllBalls");
 				GD.PrintT(AllBalls);
 				GD.Print("Shot Ended");
-				EmitSignal(SignalName.ShotEnded);
+				EmitSignal(SignalName.ShotEnded, this);
 				
 				ShotTaken = false;
 			}
@@ -46,6 +51,11 @@ public partial class Balls : Node
 	public void StopAllBalls()
 	{
 		Array.ForEach(AllBalls, b => b.Stop());
+	}
+
+	public static Vector2 GetStartPosition(BallType type)
+	{
+		return _startPositions[type];
 	}
 }
 

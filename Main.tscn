@@ -224,7 +224,7 @@ grow_vertical = 0
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomRight" to="Background/Border/Table/Pockets/BottomRight" method="OnShapeEntered"]
 [connection signal="BallPocketed" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Border/Table/Pockets/BottomLeft" method="OnShapeEntered"]
-[connection signal="ShotEnded" from="Background/Border/Table/Balls" to="." method="ShotEnded"]
+[connection signal="ShotEnded" from="Background/Border/Table/Balls" to="Background/Scoreboard" method="ShotEnded"]
 [connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="Background/Scoreboard" method="Carom"]
 [connection signal="ShotTaken" from="Background/Border/Table/Balls/CueBall" to="Background/Border/Table/Balls" method="TakeShot"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
