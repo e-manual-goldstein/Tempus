@@ -7,15 +7,31 @@ using System.Linq;
 public partial class Scoreboard : Node2D
 {
 
+	[Signal]
+	public delegate void TurnEndedEventHandler(Balls balls);
+	
 	private Dictionary<BallType, int> _caroms;
-	private List<Ball> _pocketsThisShot = new List<Ball>();
+	private int CaromScore()
+	{
+		return Math.Max(0, _caroms.Values.Sum() - 1);
+	}
 
-	public float Score;
+	private List<Ball> _pocketsThisShot = new List<Ball>();
+	private int PocketScore()
+	{
+		return _pocketsThisShot.Sum(r => (int)r.BallType);
+	}
+
+	private List<BallType> _pocketsThisTurn = new List<BallType>();
+
+	public int ShotScore()
+	{
+		return PocketScore() + CaromScore(); 
+	}
 
 	public int TurnScore { get; set; }
-	public int ShotScore => Math.Max(0, _caroms.Values.Sum() - 1) + _pocketsThisShot.Sum(b => (int)b.BallType);
-
-   
+	public int TotalScore { get; set; }
+	   
 	public override void _Ready()
 	{
 		Debugger.Launch();
@@ -30,9 +46,9 @@ public partial class Scoreboard : Node2D
 	Vector2 _redSocket;
 	Vector2 _orangeSocket;
 
-	public void UpdateScore(float score)
+	public void UpdateScoreLabel(int score)
 	{
-		GetNode<Label>("Score").Text = ((int)score).ToString();
+		GetNode<Label>("Score").Text = score.ToString();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -75,7 +91,7 @@ public partial class Scoreboard : Node2D
 	private void ResetBall(Ball ball, Balls balls)
 	{
 		GD.Print($"Resetting {ball}");
-		ReplaceBall(ball, balls, Balls.GetStartPosition(ball.BallType));
+		ReplaceBall(ball, balls, Balls.GetStartPosition(ball.BallType), true);
 	}
 
 	private void ResetCaroms()
@@ -86,30 +102,89 @@ public partial class Scoreboard : Node2D
 
 	public void ShotEnded(Balls balls)
 	{
+		GD.Print("End of Shot");
+		TurnScore += ShotScore();
+		UpdateScoreLabel(TotalScore + TurnScore);
+		if (!ShotWasLegal() || !PointsScored())
+		{
+			EndTurn();
+		}
 		ResetPocketed(balls);
-		UpdateScore(Score);
+		ResetCaroms();
+	}
+
+	private void EndTurn()
+	{
+		GD.Print("End of Turn");
+		if (!ShotWasLegal())
+		{
+			GD.Print($"Shot was illegal, lost {TurnScore} points");
+		}
+		else
+		{
+			TotalScore += TurnScore;
+		}
+		TurnScore = 0;
+		EmitSignal(SignalName.TurnEnded);
+	}
+
+	private bool PointsScored()
+	{
+		return ShotScore() > 0;
+	}
+
+	private bool ShotWasLegal()
+	{
+		if (OneOrMoreBallsStruck() && !CueballWasPocketed())
+		{
+			GD.Print("Shot was legal");
+			return true;
+		}
+		GD.Print("Shot was illegal");
+		return false;
+	}
+
+	private bool OneOrMoreBallsStruck()
+	{
+		if (CaromScore() >= 0)
+		{
+			GD.Print("One or more balls was struck");
+			return true;
+		}
+		GD.Print("No ball was struck");
+		return false;
+	}
+
+	private bool CueballWasPocketed()
+	{
+		if (_pocketsThisShot.Any(b => b.IsCueball))
+		{
+			GD.Print("Cueball was pocketed");
+		}
+		return false;
 	}
 
 	private Dictionary<BallType, int> BaseCaroms()
 	{
-		return Enum.GetValues(typeof(BallType)).OfType<BallType>().ToDictionary(d => d, e => 0);
+		return Enum.GetValues(typeof(BallType)).OfType<BallType>()
+			.Where(r => r != BallType.White).ToDictionary(d => d, e => 0);
 	}
 
 	private void PocketBall(Ball ball)
 	{
-		GD.Print("Updating Turn Score");
 		ball.IsPocketed = true;
-		var replacementBall = ReplaceBall(ball, this, GetSocketLocation(ball.BallType));
-		UpdateShotScore(replacementBall);
+		ball = ReplaceBall(ball, this, GetSocketLocation(ball.BallType), !ball.IsCueball);
+		UpdatePocketed(ball);
 	}
 
-	private Ball ReplaceBall(Ball ball, Node newParent, Vector2 newLocation)
+	private Ball ReplaceBall(Ball ball, Node newParent, Vector2 newLocation, bool visible)
 	{
 		ball.Stop();
 		PackedScene ballScene = (PackedScene)ResourceLoader.Load("res://Ball.tscn");
 		var replacementBall = ballScene.Instantiate() as Ball;
 		replacementBall.Clone(ball);
 		replacementBall.Position = newLocation;//UpdateTurnScore(ball);
+		replacementBall.Visible = visible;
 		newParent.AddChild(replacementBall);
 		ball.Visible = false;
 		RemoveChild(ball);
@@ -122,7 +197,6 @@ public partial class Scoreboard : Node2D
 		ball.IsPocketed = true;
 		ball.Stop();
 		ResetCaroms();
-		//UpdateShotScore(ball);
 	}
 
 	private void BallPocketed(Ball ball)
@@ -131,8 +205,8 @@ public partial class Scoreboard : Node2D
 		switch (ball.BallType)
 		{
 			case BallType.White:
-				PocketCueBall(ball);
-				break;
+				//PocketCueBall(ball);
+				//break;
 			case BallType.Yellow:
 			case BallType.Red:
 			case BallType.Orange:
@@ -141,18 +215,12 @@ public partial class Scoreboard : Node2D
 			default:
 				break;
 		}
-		//ResetBall(ball);
 	}
 
-	private void UpdateShotScore(Ball ball)
+	private void UpdatePocketed(Ball ball)
 	{
 		_pocketsThisShot.Add(ball);
+		_pocketsThisTurn.Add(ball.BallType);
 		GD.Print($"Updating Turn Score: {TurnScore}");
-	}
-
-	private void ResetShot()
-	{
-		ResetCaroms();
-		_pocketsThisShot.Clear();
 	}
 }

@@ -32,13 +32,7 @@ public partial class Balls : Node
 		{
 			if (AllBalls.Any() && AllBalls.All(b => b.LinearVelocity.Length() < 2))
 			{
-				GD.Print("Stopping all balls");
-				CallDeferred("StopAllBalls");
-				GD.PrintT(AllBalls);
-				GD.Print("Shot Ended");
-				EmitSignal(SignalName.ShotEnded, this);
-				
-				ShotTaken = false;
+				EndShot();
 			}
 		}
 	}
@@ -46,6 +40,23 @@ public partial class Balls : Node
 	public void TakeShot()
 	{
 		ShotTaken = true;
+	}
+
+	private void EndShot()
+	{
+		GD.Print("Stopping all balls");
+		CallDeferred("StopAllBalls");
+		GD.PrintT(AllBalls);
+		GD.Print("Shot Ended");
+		EmitSignal(SignalName.ShotEnded, this);
+
+		ShotTaken = false;
+		
+	}
+
+	private void EndTurn()
+	{
+
 	}
 
 	public void StopAllBalls()

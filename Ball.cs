@@ -68,9 +68,9 @@ public partial class Ball : RigidBody2D
 
 	public void OnCollision(Node body)
 	{
-		if (body is Ball ball)
+		if (body is Ball otherBall)
 		{
-			EmitSignal(SignalName.Carom, ball);
+			EmitSignal(SignalName.Carom, otherBall);
 		}
 		else if (body is Pocket pocket)
 		{
