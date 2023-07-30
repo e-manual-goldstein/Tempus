@@ -212,6 +212,7 @@ offset_bottom = -345.0
 grow_horizontal = 2
 grow_vertical = 0
 
+[connection signal="CueBallStruck" from="." to="Background/Border/Table/Balls" method="StrikeCueBall"]
 [connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopRight" to="Background/Scoreboard" method="BallPocketed"]
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/TopRight" to="Background/Border/Table/Pockets/TopRight" method="OnShapeEntered"]
 [connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopLeft" to="Background/Scoreboard" method="BallPocketed"]
@@ -226,7 +227,6 @@ grow_vertical = 0
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Border/Table/Pockets/BottomLeft" method="OnShapeEntered"]
 [connection signal="ShotEnded" from="Background/Border/Table/Balls" to="Background/Scoreboard" method="ShotEnded"]
 [connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="Background/Scoreboard" method="Carom"]
-[connection signal="ShotTaken" from="Background/Border/Table/Balls/CueBall" to="Background/Border/Table/Balls" method="TakeShot"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 
 [editable path="Background/Border/Table/Balls/CueBall"]

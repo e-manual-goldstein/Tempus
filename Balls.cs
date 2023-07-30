@@ -13,12 +13,15 @@ public partial class Balls : Node
 	static Dictionary<BallType, Vector2> _startPositions;
 
 	[Signal]
+	public delegate void ShotTakenEventHandler();
+	
+	[Signal]
 	public delegate void ShotEndedEventHandler(Balls balls);
 
 	public Ball[] AllBalls => GetChildren().OfType<Ball>().ToArray();
 
 	public static int BallIdCounter;
-	public bool ShotTaken { get; set; }
+	bool _shotTaken;
 	
 	public override void _Ready()
 	{
@@ -28,7 +31,7 @@ public partial class Balls : Node
 
 	public override void _Process(double delta)
 	{
-		if (ShotTaken)
+		if (_shotTaken)
 		{
 			if (AllBalls.Any() && AllBalls.All(b => b.LinearVelocity.Length() < 2))
 			{
@@ -39,7 +42,16 @@ public partial class Balls : Node
 
 	public void TakeShot()
 	{
-		ShotTaken = true;
+		_shotTaken = true;
+	}
+
+	public void StrikeCueBall(Vector2 velocity)
+	{
+		var cueball = AllBalls.Single(f => f.IsCueball);
+		cueball.LinearVelocity = velocity - cueball.Position;
+		TakeShot();
+		EmitSignal(SignalName.ShotTaken);
+		
 	}
 
 	private void EndShot()
@@ -50,7 +62,7 @@ public partial class Balls : Node
 		GD.Print("Shot Ended");
 		EmitSignal(SignalName.ShotEnded, this);
 
-		ShotTaken = false;
+		_shotTaken = false;
 		
 	}
 

@@ -16,9 +16,6 @@ public partial class Ball : RigidBody2D
 	[Signal]
 	public delegate void CaromEventHandler(Ball ball);
 
-	[Signal]
-	public delegate void ShotTakenEventHandler();
-
 	[Export]
 	public bool IsCueball { get; set; }
 
@@ -34,19 +31,6 @@ public partial class Ball : RigidBody2D
 	{
 		GD.Print($"{GetType()} ready");
 		Sprite = GetChildren().OfType<Sprite2D>().First();
-	}
-
-	public override void _Input(InputEvent @event)
-	{
-		if (Main.Started && IsCueball && @event is InputEventMouseButton eventMouseButton)
-		{
-			if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
-			{
-				GD.Print($"Shot Taken {eventMouseButton.Position}");
-				EmitSignal(SignalName.ShotTaken);
-				LinearVelocity = eventMouseButton.Position - Position;				
-			}
-		}
 	}
 	
 	public override void _Process(double delta)
@@ -114,6 +98,5 @@ public partial class Ball : RigidBody2D
 	private void _on_body_entered(Node body)
 	{
 		// Replace with function body.
-	}
+	}    
 }
-

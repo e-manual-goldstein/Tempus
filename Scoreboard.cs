@@ -187,7 +187,7 @@ public partial class Scoreboard : Node2D
 		replacementBall.Visible = visible;
 		newParent.AddChild(replacementBall);
 		ball.Visible = false;
-		RemoveChild(ball);
+		ball.GetParent().RemoveChild(ball);
 		ball.QueueFree();
 		return replacementBall;
 	}
