@@ -3,23 +3,39 @@ using System;
 
 public partial class PlayerScorecard : Node2D
 {
-	public Guid PlayerId { get; private set; }
+	#region Lifecycle
 
 	public override void _Ready()
 	{
 		PlayerId = Guid.NewGuid();
 	}
 
-	internal float GetHeight()
+	#endregion
+
+	#region Layout
+	ColorRect Background => GetNode<ColorRect>("Background");
+	public float GetHeight()
 	{
-		var rect = GetNode<ColorRect>("Background").Size.Y;
-		return rect;
+		return Background.Size.Y;
 	}
+
+	internal float GetWidth()
+	{
+		return Background.Size.X;
+	}
+
+	#endregion
+
+	#region Logic
+	public Guid PlayerId { get; private set; }
 
 	[Export]
 	public string PlayerName { get; set; }
 
 	[Export]
 	public int PlayerScore { get; set; }
+
+	#endregion
+
 
 }
