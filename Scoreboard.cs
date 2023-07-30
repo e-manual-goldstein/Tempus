@@ -210,7 +210,7 @@ public partial class Scoreboard : Node2D
 			case BallType.Yellow:
 			case BallType.Red:
 			case BallType.Orange:
-				PocketBall(ball);
+				CallDeferred("PocketBall", ball);
 				break;
 			default:
 				break;

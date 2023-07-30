@@ -72,7 +72,6 @@ public partial class Ball : RigidBody2D
 	{
 		IsCueball = otherBall.IsCueball;
 		BallType = otherBall.BallType;
-		ZIndex = otherBall.ZIndex;
 		IsPocketed = otherBall.IsPocketed;
 		GetNode<Sprite2D>("Sprite2D").Texture = otherBall.GetNode<Sprite2D>("Sprite2D").Texture;
 	}
