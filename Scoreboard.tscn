@@ -7,7 +7,7 @@
 script = ExtResource("1_gw0gk")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 183.0
+offset_right = 229.0
 offset_bottom = 47.0
 color = Color(0.301961, 0.145098, 0.254902, 1)
 
@@ -20,10 +20,19 @@ position = Vector2(67, 24)
 [node name="OrangeSocket" parent="." instance=ExtResource("1_ujx6e")]
 position = Vector2(108, 24)
 
-[node name="Score" type="Label" parent="."]
-offset_left = 133.0
+[node name="ShotScoreLabel" type="Label" parent="."]
+offset_left = 180.0
 offset_top = 9.0
-offset_right = 173.0
+offset_right = 220.0
+offset_bottom = 38.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TurnScoreLabel" type="Label" parent="."]
+offset_left = 136.0
+offset_top = 9.0
+offset_right = 176.0
 offset_bottom = 38.0
 text = "0"
 horizontal_alignment = 1

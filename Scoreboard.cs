@@ -7,10 +7,20 @@ using System.Linq;
 public partial class Scoreboard : Node2D
 {
 
+	public List<PlayerScorecard> Scorecards { get; set; } = new List<PlayerScorecard>();
+
+	public void PlayerAdded(PlayerScorecard playerScorecard)
+	{
+		var y = Scorecards.Sum(s => s.GetHeight());
+
+		Scorecards.Add(playerScorecard);
+	}
+
 	[Signal]
 	public delegate void TurnEndedEventHandler(Balls balls);
 	
 	private Dictionary<BallType, int> _caroms;
+	
 	private int CaromScore()
 	{
 		return Math.Max(0, _caroms.Values.Sum() - 1);

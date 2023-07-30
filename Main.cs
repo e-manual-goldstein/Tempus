@@ -13,7 +13,24 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
-		//System.Diagnostics.Debugger.Launch();
+
+		var scoreboard = GetNode<Scoreboard>("Background/Scoreboard");
+
+		var playerOne = CreateNewPlayer("Kevin", 12);
+		var playerTwo = CreateNewPlayer("Amy", 9);
+		
+		scoreboard.PlayerAdded(playerOne);
+		scoreboard.PlayerAdded(playerTwo);
+
+	}
+
+	private PlayerScorecard CreateNewPlayer(string playerName, int playerScore = 0)
+	{
+		PackedScene playerScene = (PackedScene)ResourceLoader.Load("res://PlayerScorecard.tscn");
+		var player = playerScene.Instantiate() as PlayerScorecard;
+		player.PlayerName = playerName;
+		player.PlayerScore = playerScore;
+		return player;
 	}
 
 	public override void _Input(InputEvent @event)
