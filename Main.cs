@@ -13,16 +13,14 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
-
-		var scoreboard = GetNode<Scoreboard>("Background/Scoreboard");
-
-		var playerOne = CreateNewPlayer("Kevin", 12);
-		var playerTwo = CreateNewPlayer("Amy", 9);
-		
-		scoreboard.PlayerAdded(playerOne);
-		scoreboard.PlayerAdded(playerTwo);
+		CreateNewPlayer("Kevin", 12);
+		CreateNewPlayer("Amy", 9);
 
 	}
+
+	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");
+
+	public Dictionary<int, PlayerScorecard> Players { get; set; } = new Dictionary<int, PlayerScorecard>();
 
 	private PlayerScorecard CreateNewPlayer(string playerName, int playerScore = 0)
 	{
@@ -30,6 +28,8 @@ public partial class Main : Node2D
 		var player = playerScene.Instantiate() as PlayerScorecard;
 		player.PlayerName = playerName;
 		player.PlayerScore = playerScore;
+		Players[player.PlayerId] = player;
+		Scoreboard.PlayerAdded(player, Players.Count);
 		return player;
 	}
 
@@ -49,6 +49,7 @@ public partial class Main : Node2D
 	{
 		GD.Print("Starting New Game");
 		Started = true;
+		Scoreboard.StartNewGame(Players);
 		var hud = GetNode<HUD>("HUD");
 		hud.ShowMessage("Get Ready!");
 	}

@@ -3,17 +3,28 @@ using System;
 
 public partial class PlayerScorecard : Node2D
 {
-	#region Lifecycle
 
+	private static int playerId;
+	public PlayerScorecard() 
+	{
+		PlayerId = ++playerId;
+	}
+
+	#region Lifecycle
 	public override void _Ready()
 	{
-		PlayerId = Guid.NewGuid();
+		NameLabel.Text = PlayerName;
+		UpdateScoreLabel();
 	}
 
 	#endregion
 
 	#region Layout
+	
 	ColorRect Background => GetNode<ColorRect>("Background");
+	Label NameLabel => GetNode<Label>("NameLabel");
+	Label ScoreLabel => GetNode<Label>("ScoreLabel");
+
 	public float GetHeight()
 	{
 		return Background.Size.Y;
@@ -24,10 +35,22 @@ public partial class PlayerScorecard : Node2D
 		return Background.Size.X;
 	}
 
+	internal void AddTurnScore(int turnScore)
+	{
+		PlayerScore += turnScore;
+		UpdateScoreLabel();
+	}
+
+	private void UpdateScoreLabel()
+	{
+		ScoreLabel.Text = PlayerScore.ToString();
+	}
+
 	#endregion
 
 	#region Logic
-	public Guid PlayerId { get; private set; }
+
+	public int PlayerId { get; }
 
 	[Export]
 	public string PlayerName { get; set; }

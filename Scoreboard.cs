@@ -32,11 +32,9 @@ public partial class Scoreboard : Node2D
 	float _headerHeight;
 	ColorRect Background => GetNode<ColorRect>("Background");
 
-	public List<PlayerScorecard> Players { get; set; } = new List<PlayerScorecard>();
-
 	public void UpdateScoreLabel(int score)
 	{
-		GetNode<Label>("Score").Text = score.ToString();
+		GetNode<Label>("ShotScoreLabel").Text = score.ToString();
 	}
 
 	public Vector2 GetSocketLocation(BallType ballType)
@@ -71,26 +69,28 @@ public partial class Scoreboard : Node2D
 		return replacementBall;
 	}
 
-	public void PlayerAdded(PlayerScorecard playerScorecard)
+	public void PlayerAdded(PlayerScorecard playerScorecard, int playerNumber)
 	{
-		var y = Players.Sum(s => s.GetHeight()) + _headerHeight;
+		var y = (playerNumber - 1) * playerScorecard.GetHeight() + _headerHeight;
 		var x = (Background.Size.X - playerScorecard.GetWidth()) / 2;
-		playerScorecard.Position = new Vector2(x, y);
-		LengthenScoreboard(y);
+		playerScorecard.Position = new Vector2(x, y + x);
+		LengthenScoreboard(playerScorecard.GetHeight(), x);
 		AddChild(playerScorecard);
-		Players.Add(playerScorecard);		
 	}
 
-	private void LengthenScoreboard(float lengthenBy)
+	private void LengthenScoreboard(float lengthenBy, float border = 0)
 	{
 		var currentSize = Background.Size;
-		var newSize = new Vector2(currentSize.X, currentSize.Y + lengthenBy);
+		var newSize = new Vector2(currentSize.X, currentSize.Y + lengthenBy + border);
 		Background.SetSize(newSize);
 	}
 
 	#endregion
 
 	#region Logic
+
+	private int _currentPlayerId;
+	Dictionary<int, PlayerScorecard> _players;    
 	private Dictionary<BallType, int> _caroms;
 	private List<Ball> _pocketsThisShot = new List<Ball>();
 	private List<BallType> _pocketsThisTurn = new List<BallType>();
@@ -100,6 +100,17 @@ public partial class Scoreboard : Node2D
 
 	[Signal]
 	public delegate void TurnEndedEventHandler(Balls balls);
+
+	internal void StartNewGame(Dictionary<int, PlayerScorecard> players)
+	{
+		_players = players;
+		_currentPlayerId = _players.Keys.First();
+	}
+
+	private int GetNextPlayerId()
+	{
+		return _players.TryGetValue(_currentPlayerId + 1, out var player) ? player.PlayerId : _players.Min(p => p.Key);
+	}
 
 	private int CaromScore()
 	{
@@ -165,10 +176,16 @@ public partial class Scoreboard : Node2D
 		}
 		else
 		{
-			TotalScore += TurnScore;
+			UpdatePlayerScore(TurnScore);
 		}
+		_currentPlayerId = GetNextPlayerId();
 		TurnScore = 0;
 		EmitSignal(SignalName.TurnEnded);
+	}
+
+	private void UpdatePlayerScore(int turnScore)
+	{
+		_players[_currentPlayerId].AddTurnScore(turnScore);
 	}
 
 	private bool PointsScored()
@@ -253,5 +270,5 @@ public partial class Scoreboard : Node2D
 	}
 
 	#endregion
-	
+
 }
