@@ -5,9 +5,12 @@
 [node name="PlayerScorecard" type="Node2D"]
 script = ExtResource("1_48w60")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Highlighter" type="MarginContainer" parent="."]
 offset_right = 176.0
 offset_bottom = 40.0
+
+[node name="Background" type="ColorRect" parent="Highlighter"]
+layout_mode = 2
 color = Color(0.407843, 0.403922, 0.698039, 1)
 
 [node name="NameLabel" type="Label" parent="."]

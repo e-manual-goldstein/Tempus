@@ -187,11 +187,20 @@ public partial class Scoreboard : Node2D
 		{
 			UpdatePlayerScore(TurnScore);
 		}
-		_currentPlayerId = GetNextPlayerId();
+		SelectNextPlayer();
 		TurnScore = 0;
 		UpdateScoreLabel(TurnScore);
 
 		EmitSignal(SignalName.TurnEnded);
+	}
+
+	private void SelectNextPlayer()
+	{
+		_currentPlayerId = GetNextPlayerId();
+		foreach (var (_, player) in _players)
+		{
+			player.UpdateHighlighted(_currentPlayerId);
+		}
 	}
 
 	private void UpdatePlayerScore(int turnScore)

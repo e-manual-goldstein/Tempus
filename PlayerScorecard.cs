@@ -20,19 +20,19 @@ public partial class PlayerScorecard : Node2D
 	#endregion
 
 	#region Layout
-	
-	ColorRect Background => GetNode<ColorRect>("Background");
+
+	MarginContainer Highlighter => GetNode<MarginContainer>("Highlighter");
 	Label NameLabel => GetNode<Label>("NameLabel");
 	Label ScoreLabel => GetNode<Label>("ScoreLabel");
 
 	public float GetHeight()
 	{
-		return Background.Size.Y;
+		return Highlighter.Size.Y;
 	}
 
 	internal float GetWidth()
 	{
-		return Background.Size.X;
+		return Highlighter.Size.X;
 	}
 
 	internal void AddTurnScore(int turnScore)
@@ -46,10 +46,19 @@ public partial class PlayerScorecard : Node2D
 		ScoreLabel.Text = PlayerScore.ToString();
 	}
 
+	public void UpdateHighlighted(int playerId)
+	{
+		int border = (playerId == PlayerId) ? 5 : 0;
+		Highlighter.AddThemeConstantOverride("margin_top", border);
+		Highlighter.AddThemeConstantOverride("margin_left", border);
+		Highlighter.AddThemeConstantOverride("margin_bottom", border);
+		Highlighter.AddThemeConstantOverride("margin_right", border);
+	}
+
 	#endregion
 
 	#region Logic
-
+	
 	public int PlayerId { get; }
 
 	[Export]
