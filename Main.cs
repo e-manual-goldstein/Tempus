@@ -13,8 +13,8 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
-		CreateNewPlayer("Kevin", 12);
-		CreateNewPlayer("Amy", 9);
+		CreateNewPlayer("Kevin");
+		CreateNewPlayer("Amy");
 
 	}
 

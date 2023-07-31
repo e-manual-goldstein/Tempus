@@ -34,7 +34,7 @@ public partial class Scoreboard : Node2D
 
 	public void UpdateScoreLabel(int score)
 	{
-		GetNode<Label>("ShotScoreLabel").Text = score.ToString();
+		GetNode<Label>("TurnScoreLabel").Text = score.ToString();
 	}
 
 	public Vector2 GetSocketLocation(BallType ballType)
@@ -54,7 +54,7 @@ public partial class Scoreboard : Node2D
 		return default;
 	}
 
-	private Ball ReplaceBall(Ball ball, Node newParent, Vector2 newLocation, bool visible)
+	private Ball ReplaceBall(Ball ball, Node newParent, Vector2 newLocation, bool visible, bool attachSignal = false)
 	{
 		ball.Stop();
 		PackedScene ballScene = (PackedScene)ResourceLoader.Load("res://Ball.tscn");
@@ -62,6 +62,10 @@ public partial class Scoreboard : Node2D
 		replacementBall.Clone(ball);
 		replacementBall.Position = newLocation;//UpdateTurnScore(ball);
 		replacementBall.Visible = visible;
+		if (attachSignal)
+		{
+			replacementBall.Carom += Carom;
+		}
 		newParent.AddChild(replacementBall);
 		ball.Visible = false;
 		ball.GetParent().RemoveChild(ball);
@@ -96,7 +100,7 @@ public partial class Scoreboard : Node2D
 	private List<BallType> _pocketsThisTurn = new List<BallType>();
 
 	public int TurnScore { get; set; }
-	public int TotalScore { get; set; }
+	//public int TotalScore { get; set; }
 
 	[Signal]
 	public delegate void TurnEndedEventHandler(Balls balls);
@@ -114,7 +118,12 @@ public partial class Scoreboard : Node2D
 
 	private int CaromScore()
 	{
-		return Math.Max(0, _caroms.Values.Sum() - 1);
+		return Math.Max(0, CaromCount() - 1);
+	}
+
+	private int CaromCount()
+	{
+		return _caroms.Values.Sum();
 	}
 
 	private int PocketScore()
@@ -145,7 +154,7 @@ public partial class Scoreboard : Node2D
 	private void ResetBall(Ball ball, Balls balls)
 	{
 		GD.Print($"Resetting {ball}");
-		ReplaceBall(ball, balls, Balls.GetStartPosition(ball.BallType), true);
+		ReplaceBall(ball, balls, Balls.GetStartPosition(ball.BallType), true, ball.IsCueball);
 	}
 
 	private void ResetCaroms()
@@ -158,7 +167,7 @@ public partial class Scoreboard : Node2D
 	{
 		GD.Print("End of Shot");
 		TurnScore += ShotScore();
-		UpdateScoreLabel(TotalScore + TurnScore);
+		UpdateScoreLabel(TurnScore);
 		if (!ShotWasLegal() || !PointsScored())
 		{
 			EndTurn();
@@ -180,6 +189,8 @@ public partial class Scoreboard : Node2D
 		}
 		_currentPlayerId = GetNextPlayerId();
 		TurnScore = 0;
+		UpdateScoreLabel(TurnScore);
+
 		EmitSignal(SignalName.TurnEnded);
 	}
 
@@ -206,7 +217,7 @@ public partial class Scoreboard : Node2D
 
 	private bool OneOrMoreBallsStruck()
 	{
-		if (CaromScore() >= 0)
+		if (CaromCount() > 0)
 		{
 			GD.Print("One or more balls was struck");
 			return true;
@@ -255,7 +266,7 @@ public partial class Scoreboard : Node2D
 			case BallType.Yellow:
 			case BallType.Red:
 			case BallType.Orange:
-				CallDeferred("PocketBall", ball);
+				CallDeferred(nameof(PocketBall), ball);
 				break;
 			default:
 				break;
