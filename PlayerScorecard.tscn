@@ -5,11 +5,20 @@
 [node name="PlayerScorecard" type="Node2D"]
 script = ExtResource("1_48w60")
 
-[node name="Highlighter" type="MarginContainer" parent="."]
+[node name="Border" type="ColorRect" parent="."]
 offset_right = 176.0
 offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
 
-[node name="Background" type="ColorRect" parent="Highlighter"]
+[node name="Margin" type="MarginContainer" parent="."]
+offset_right = 176.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 1
+
+[node name="Background" type="ColorRect" parent="Margin"]
 layout_mode = 2
 color = Color(0.407843, 0.403922, 0.698039, 1)
 

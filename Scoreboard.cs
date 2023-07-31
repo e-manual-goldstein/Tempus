@@ -109,6 +109,7 @@ public partial class Scoreboard : Node2D
 	{
 		_players = players;
 		_currentPlayerId = _players.Keys.First();
+		UpdateHighlighted();
 	}
 
 	private int GetNextPlayerId()
@@ -197,6 +198,12 @@ public partial class Scoreboard : Node2D
 	private void SelectNextPlayer()
 	{
 		_currentPlayerId = GetNextPlayerId();
+		UpdateHighlighted();
+
+	}
+
+	private void UpdateHighlighted()
+	{
 		foreach (var (_, player) in _players)
 		{
 			player.UpdateHighlighted(_currentPlayerId);
@@ -240,6 +247,7 @@ public partial class Scoreboard : Node2D
 		if (_pocketsThisShot.Any(b => b.IsCueball))
 		{
 			GD.Print("Cueball was pocketed");
+			return true;
 		}
 		return false;
 	}

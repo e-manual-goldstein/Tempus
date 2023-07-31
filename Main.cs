@@ -15,7 +15,7 @@ public partial class Main : Node2D
 	{
 		CreateNewPlayer("Kevin");
 		CreateNewPlayer("Amy");
-
+		CreateNewPlayer("Dog");
 	}
 
 	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");

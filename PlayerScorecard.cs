@@ -21,18 +21,20 @@ public partial class PlayerScorecard : Node2D
 
 	#region Layout
 
-	MarginContainer Highlighter => GetNode<MarginContainer>("Highlighter");
+	ColorRect Border => GetNode<ColorRect>("Border");
+	MarginContainer Margin => GetNode<MarginContainer>("Margin");
+	ColorRect Background => GetNode<ColorRect>("Margin/Background");
 	Label NameLabel => GetNode<Label>("NameLabel");
 	Label ScoreLabel => GetNode<Label>("ScoreLabel");
 
 	public float GetHeight()
 	{
-		return Highlighter.Size.Y;
+		return Margin.Size.Y;
 	}
 
 	internal float GetWidth()
 	{
-		return Highlighter.Size.X;
+		return Margin.Size.X;
 	}
 
 	internal void AddTurnScore(int turnScore)
@@ -46,13 +48,18 @@ public partial class PlayerScorecard : Node2D
 		ScoreLabel.Text = PlayerScore.ToString();
 	}
 
+	readonly string[] margins = new[] { "margin_top", "margin_left", "margin_right", "margin_bottom", };
 	public void UpdateHighlighted(int playerId)
 	{
-		int border = (playerId == PlayerId) ? 5 : 0;
-		Highlighter.AddThemeConstantOverride("margin_top", border);
-		Highlighter.AddThemeConstantOverride("margin_left", border);
-		Highlighter.AddThemeConstantOverride("margin_bottom", border);
-		Highlighter.AddThemeConstantOverride("margin_right", border);
+		//int border = (playerId == PlayerId) ? 2 : 0;
+		Color color = (playerId == PlayerId) ? Color.FromHtml("#6883b2") : Color.FromHtml("#6867b2");
+
+		foreach (var margin in margins)
+		{
+			//Margin.AddThemeConstantOverride(margin, border);
+			Background.Color = color;
+		}
+		
 	}
 
 	#endregion
