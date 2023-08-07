@@ -40,7 +40,6 @@ public partial class Main : Node2D
 		var velocity = directionVector * chargeStrength;
 		EmitSignal(SignalName.CueBallStruck, velocity);
 		Cue.Visible = false;
-
 	}
 
 	public void NewGame()
@@ -50,6 +49,9 @@ public partial class Main : Node2D
 		Scoreboard.StartNewGame(Players);
 		var hud = GetNode<HUD>("HUD");
 		hud.ShowMessage("Get Ready!");
+		PackedScene cueScene = (PackedScene)ResourceLoader.Load("res://Cue.tscn");
+		var cue = cueScene.Instantiate() as Cue;
+		cue.Shoot += HandlePlayerShot;
 	}
 
 	public void OnStartTimerTimeout()

@@ -238,6 +238,7 @@ grow_vertical = 0
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Border/Table/Pockets/BottomLeft" method="OnShapeEntered"]
 [connection signal="ShotEnded" from="Background/Border/Table/Balls" to="Background/Scoreboard" method="ShotEnded"]
 [connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="Background/Scoreboard" method="Carom"]
+[connection signal="Shoot" from="Cue" to="." method="HandlePlayerShot"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 
 [editable path="Background/Border/Table/Balls/CueBall"]
