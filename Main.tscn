@@ -198,10 +198,10 @@ position = Vector2(565, 43)
 [node name="Background" parent="Background/Scoreboard" index="0"]
 offset_bottom = 49.0
 
-[node name="Cue" parent="Background" instance=ExtResource("12_wdykv")]
+[node name="Cue" parent="." instance=ExtResource("12_wdykv")]
 position = Vector2(208, 202)
 
-[node name="CueTexture" parent="Background/Cue" index="0"]
+[node name="CueTexture" parent="Cue" index="0"]
 z_index = 1
 position = Vector2(0, 12)
 
@@ -245,5 +245,5 @@ grow_vertical = 0
 [editable path="Background/Border/Table/Balls/Orange"]
 [editable path="Background/Border/Table/Balls/Yellow"]
 [editable path="Background/Scoreboard"]
-[editable path="Background/Cue"]
+[editable path="Cue"]
 [editable path="HUD"]

@@ -19,6 +19,7 @@ public partial class Main : Node2D
 	}
 
 	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");
+	Cue Cue => GetNode<Cue>("Cue");
 
 	public Dictionary<int, PlayerScorecard> Players { get; set; } = new Dictionary<int, PlayerScorecard>();
 
@@ -33,17 +34,14 @@ public partial class Main : Node2D
 		return player;
 	}
 
-	public override void _Input(InputEvent @event)
+	public void HandlePlayerShot(float angle, float chargeStrength)
 	{
-		//if (Started && @event is InputEventMouseButton eventMouseButton)
-		//{
-		//	if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
-		//	{
-		//		GD.Print($"Shot Taken {eventMouseButton.Position}");
-		//		EmitSignal(SignalName.CueBallStruck, eventMouseButton.Position);                
-		//	}
-		//}
-	}    
+		Vector2 directionVector = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+		var velocity = directionVector * chargeStrength;
+		EmitSignal(SignalName.CueBallStruck, velocity);
+		Cue.Visible = false;
+
+	}
 
 	public void NewGame()
 	{
