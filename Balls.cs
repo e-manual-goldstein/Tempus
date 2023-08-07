@@ -10,6 +10,8 @@ public partial class Balls : Node
 	// private int a = 2;
 	// private string b = "text";
 
+	public static Ball Cueball { get; set; }
+
 	static Dictionary<BallType, Vector2> _startPositions;
 
 	[Signal]
@@ -27,6 +29,8 @@ public partial class Balls : Node
 	{
 		Debugger.Launch();
 		_startPositions = AllBalls.ToDictionary(d => d.BallType, r => r.Position);
+		Cueball = AllBalls.Single(b => b.IsCueball);
+
 	}
 
 	public override void _Process(double delta)

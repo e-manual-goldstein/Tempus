@@ -4,6 +4,8 @@ using System.Linq;
 
 public partial class Ball : RigidBody2D
 {
+	public const int BALL_RADIUS = 14;
+
 	public override string ToString()	{
 		return $"[{_ballId} - {BallType} {Position}]";
 	}

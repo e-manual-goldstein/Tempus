@@ -35,14 +35,14 @@ public partial class Main : Node2D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (Started && @event is InputEventMouseButton eventMouseButton)
-		{
-			if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
-			{
-				GD.Print($"Shot Taken {eventMouseButton.Position}");
-				EmitSignal(SignalName.CueBallStruck, eventMouseButton.Position);                
-			}
-		}
+		//if (Started && @event is InputEventMouseButton eventMouseButton)
+		//{
+		//	if (eventMouseButton.ButtonIndex == MouseButton.Left && eventMouseButton.IsPressed())
+		//	{
+		//		GD.Print($"Shot Taken {eventMouseButton.Position}");
+		//		EmitSignal(SignalName.CueBallStruck, eventMouseButton.Position);                
+		//	}
+		//}
 	}    
 
 	public void NewGame()
