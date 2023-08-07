@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cng0ns32toxx8"]
+[gd_scene load_steps=13 format=3 uid="uid://cng0ns32toxx8"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1"]
 [ext_resource type="Texture2D" uid="uid://c6t7qyn1p4cen" path="res://assets/sideCushionB.png" id="2"]
@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://dfx67w4twosp8" path="res://assets/ballWhite_10.png" id="10"]
 [ext_resource type="Texture2D" uid="uid://b36ra07th5g0u" path="res://assets/ballYellow_10.png" id="11"]
 [ext_resource type="PackedScene" uid="uid://bjgwfjvlb7bc1" path="res://Scoreboard.tscn" id="11_xs4ww"]
-[ext_resource type="PackedScene" uid="uid://bikuws4pymwuq" path="res://Cue.tscn" id="12_wdykv"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -198,13 +197,6 @@ position = Vector2(565, 43)
 [node name="Background" parent="Background/Scoreboard" index="0"]
 offset_bottom = 49.0
 
-[node name="Cue" parent="." instance=ExtResource("12_wdykv")]
-position = Vector2(208, 202)
-
-[node name="CueTexture" parent="Cue" index="0"]
-z_index = 1
-position = Vector2(0, 12)
-
 [node name="HUD" parent="." instance=ExtResource("7")]
 
 [node name="Message" parent="HUD" index="0"]
@@ -238,7 +230,6 @@ grow_vertical = 0
 [connection signal="body_shape_entered" from="Background/Border/Table/Pockets/BottomLeft" to="Background/Border/Table/Pockets/BottomLeft" method="OnShapeEntered"]
 [connection signal="ShotEnded" from="Background/Border/Table/Balls" to="Background/Scoreboard" method="ShotEnded"]
 [connection signal="Carom" from="Background/Border/Table/Balls/CueBall" to="Background/Scoreboard" method="Carom"]
-[connection signal="Shoot" from="Cue" to="." method="HandlePlayerShot"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 
 [editable path="Background/Border/Table/Balls/CueBall"]
@@ -246,5 +237,4 @@ grow_vertical = 0
 [editable path="Background/Border/Table/Balls/Orange"]
 [editable path="Background/Border/Table/Balls/Yellow"]
 [editable path="Background/Scoreboard"]
-[editable path="Cue"]
 [editable path="HUD"]

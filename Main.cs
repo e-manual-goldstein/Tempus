@@ -19,7 +19,8 @@ public partial class Main : Node2D
 	}
 
 	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");
-	Cue Cue => GetNode<Cue>("Cue");
+	//Cue Cue => GetChildren().OfType<Cue>().SingleOrDefault();
+	Balls Balls => GetNode<Balls>("Background/Border/Table/Balls");
 
 	public Dictionary<int, PlayerScorecard> Players { get; set; } = new Dictionary<int, PlayerScorecard>();
 
@@ -34,12 +35,12 @@ public partial class Main : Node2D
 		return player;
 	}
 
-	public void HandlePlayerShot(float angle, float chargeStrength)
+	//Move this to Balls.cs
+	public void HandlePlayerShot(Cue cue)
 	{
-		Vector2 directionVector = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-		var velocity = directionVector * chargeStrength;
-		EmitSignal(SignalName.CueBallStruck, velocity);
-		Cue.Visible = false;
+		Vector2 directionVector = new Vector2(Mathf.Cos(cue.CueAngle), Mathf.Sin(cue.CueAngle));
+		EmitSignal(SignalName.CueBallStruck, directionVector * cue.ChargeStrength * 10);
+		RemoveCueFromScene(cue);
 	}
 
 	public void NewGame()
@@ -47,11 +48,29 @@ public partial class Main : Node2D
 		GD.Print("Starting New Game");
 		Started = true;
 		Scoreboard.StartNewGame(Players);
+		Balls.ShotEnded += AddCueToScene;
 		var hud = GetNode<HUD>("HUD");
 		hud.ShowMessage("Get Ready!");
+		AddCueToScene(Balls);
+	}
+
+	private void AddCueToScene(Balls balls)
+	{
 		PackedScene cueScene = (PackedScene)ResourceLoader.Load("res://Cue.tscn");
 		var cue = cueScene.Instantiate() as Cue;
+		cue.Name = "Cue";
 		cue.Shoot += HandlePlayerShot;
+		cue.ZIndex = 1;
+		cue.TargetCueBall(balls.Cueball.Position);
+		AddChild(cue);
+	}
+
+	private void RemoveCueFromScene(Cue cue)
+	{
+		cue.Shoot -= HandlePlayerShot;
+		//Balls.ShotEnded -= AddCueToScene;
+		RemoveChild(cue);
+		cue.QueueFree();
 	}
 
 	public void OnStartTimerTimeout()

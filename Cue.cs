@@ -12,7 +12,7 @@ public partial class Cue : Node2D
 	const double STRIKE_PERIOD = 0.1;
 
 	[Signal]
-	public delegate void ShootEventHandler(float angle, float chargeStrength);
+	public delegate void ShootEventHandler(Cue cue);
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -54,7 +54,7 @@ public partial class Cue : Node2D
 			}
 			else if (!_isCharging && _isAiming) // Cannot drag once you are charging
 			{
-				Rotation = (GetGlobalMousePosition() - GlobalPosition).Angle() - Mathf.DegToRad(90);
+				CueAngle = (GetGlobalMousePosition() - GlobalPosition).Angle();
 			}
 		}
 		else if (_shotTaken)
@@ -105,24 +105,37 @@ public partial class Cue : Node2D
 	private bool _shotTaken = false;
 	private float _remainingPower;
 
-	private float _chargeStrength = 10;
+	private float _chargeStrength = 0;
 	private int _maxChargeStrength = 100;
 
+	public float ChargeStrength => _chargeStrength;
+
+	public float CueAngle
+	{
+		get
+		{
+			return Rotation - Mathf.DegToRad(90);
+		}
+		set
+		{
+			Rotation = value - Mathf.DegToRad(90);
+		}
+	}
 	private void ChargeShot(double percentCharge)
 	{
 		float increment = (float)(percentCharge * _maxChargeStrength);
-		GD.Print($"Incrementing Charge by: {percentCharge}% or {increment}");
+		//GD.Print($"Incrementing Charge by: {percentCharge}% or {increment}");
 		_chargeStrength = Math.Min(_chargeStrength + increment, _maxChargeStrength);
 	}
 
 	private void DischargeShot(double percentCharge)
 	{
 		float decrement = (float)(percentCharge * _chargeStrength);
-		GD.Print($"Decrementing Charge by: {percentCharge}% or {decrement}");
+		//GD.Print($"Decrementing Charge by: {percentCharge}% or {decrement}");
 		_remainingPower = Math.Max(_remainingPower + decrement, 0);
 		if (_remainingPower == 0)
 		{
-			EmitSignal(SignalName.Shoot, Rotation, _chargeStrength);
+			EmitSignal(SignalName.Shoot, this);
 			ResetCue();
 		}
 	}

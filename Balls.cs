@@ -10,7 +10,7 @@ public partial class Balls : Node
 	// private int a = 2;
 	// private string b = "text";
 
-	public static Ball Cueball { get; set; }
+	public Ball Cueball => AllBalls.SingleOrDefault(b => b.IsCueball);
 
 	static Dictionary<BallType, Vector2> _startPositions;
 
@@ -29,7 +29,7 @@ public partial class Balls : Node
 	{
 		Debugger.Launch();
 		_startPositions = AllBalls.ToDictionary(d => d.BallType, r => r.Position);
-		Cueball = AllBalls.Single(b => b.IsCueball);
+		//Cueball = AllBalls.Single(b => b.IsCueball);
 
 	}
 
@@ -52,7 +52,7 @@ public partial class Balls : Node
 	public void StrikeCueBall(Vector2 velocity)
 	{
 		var cueball = AllBalls.Single(f => f.IsCueball);
-		cueball.LinearVelocity = velocity - cueball.Position;
+		cueball.LinearVelocity = velocity;
 		TakeShot();
 		EmitSignal(SignalName.ShotTaken);
 		
@@ -65,9 +65,7 @@ public partial class Balls : Node
 		GD.PrintT(AllBalls);
 		GD.Print("Shot Ended");
 		EmitSignal(SignalName.ShotEnded, this);
-
-		_shotTaken = false;
-		
+		_shotTaken = false;		
 	}
 
 	private void EndTurn()
