@@ -27,7 +27,7 @@ public partial class Balls : Node
 	
 	public override void _Ready()
 	{
-		Debugger.Launch();
+		//Debugger.Launch();
 		_startPositions = AllBalls.ToDictionary(d => d.BallType, r => r.Position);
 		//Cueball = AllBalls.Single(b => b.IsCueball);
 

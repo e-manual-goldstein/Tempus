@@ -10,7 +10,7 @@ public partial class Scoreboard : Node2D
 
 	public override void _Ready()
 	{
-		Debugger.Launch();
+		//Debugger.Launch();
 		_caroms = BaseCaroms();
 		_headerHeight = Background.Size.Y;
 		_yellowSocket = GetNode<Area2D>("YellowSocket").Position;
@@ -101,6 +101,7 @@ public partial class Scoreboard : Node2D
 
 	public int TurnScore { get; set; }
 	//public int TotalScore { get; set; }
+	public bool FoulCommitted { get; set; }
 
 	[Signal]
 	public delegate void TurnEndedEventHandler(Balls balls);
@@ -110,6 +111,7 @@ public partial class Scoreboard : Node2D
 		_players = players;
 		_currentPlayerId = _players.Keys.First();
 		UpdateHighlighted();
+		CurrentPlayer().StartTurn();
 	}
 
 	private int GetNextPlayerId()
@@ -122,6 +124,7 @@ public partial class Scoreboard : Node2D
 		return Math.Max(0, CaromCount() - 1);
 	}
 
+	//The total number of balls that the cueball has hit on this shot
 	private int CaromCount()
 	{
 		return _caroms.Values.Sum();
@@ -139,8 +142,20 @@ public partial class Scoreboard : Node2D
 
 	public void Carom(Ball ball)
 	{
-		GD.Print("Carom!");
+		if (CurrentPlayer().IsFirstShot && CaromCount() == 0)
+		{
+			if (ball.BallType != BallType.Red)
+			{
+				MessageBox.PrintMessage("Foul!");
+				FoulCommitted = true;
+			}
+		}
 		_caroms[ball.BallType] = 1;
+		if (CaromScore() > 0)
+		{
+			MessageBox.PrintMessage("Carom!");
+		}
+			
 	}
 
 	private void ResetPocketed(Balls balls)
@@ -168,21 +183,26 @@ public partial class Scoreboard : Node2D
 	{
 		GD.Print("End of Shot");
 		TurnScore += ShotScore();
+		MessageBox.PrintMessage($"Scored {TurnScore} this turn");
 		UpdateScoreLabel(TurnScore);
-		if (!ShotWasLegal() || !PointsScored())
+		var shotWasLegal = ShotWasLegal();
+
+		if (!shotWasLegal || !PointsScored())
 		{
-			EndTurn();
+			EndTurn(shotWasLegal);
 		}
+		CurrentPlayer().IsFirstShot = false;
 		ResetPocketed(balls);
 		ResetCaroms();
+		FoulCommitted = false;
 	}
 
-	private void EndTurn()
+	private void EndTurn(bool shotWasLegal)
 	{
-		GD.Print("End of Turn");
-		if (!ShotWasLegal())
+		MessageBox.PrintMessage("End of Turn");
+		if (!shotWasLegal)
 		{
-			GD.Print($"Shot was illegal, lost {TurnScore} points");
+			MessageBox.PrintMessage($"Shot was illegal, lost {TurnScore} points");
 		}
 		else
 		{
@@ -199,7 +219,12 @@ public partial class Scoreboard : Node2D
 	{
 		_currentPlayerId = GetNextPlayerId();
 		UpdateHighlighted();
+		CurrentPlayer().StartTurn();
+	}
 
+	private PlayerScorecard CurrentPlayer()
+	{
+		return _players[_currentPlayerId];
 	}
 
 	private void UpdateHighlighted()
@@ -212,7 +237,7 @@ public partial class Scoreboard : Node2D
 
 	private void UpdatePlayerScore(int turnScore)
 	{
-		_players[_currentPlayerId].AddTurnScore(turnScore);
+		CurrentPlayer().AddTurnScore(turnScore);
 	}
 
 	private bool PointsScored()
@@ -222,7 +247,7 @@ public partial class Scoreboard : Node2D
 
 	private bool ShotWasLegal()
 	{
-		if (OneOrMoreBallsStruck() && !CueballWasPocketed())
+		if (OneOrMoreBallsStruck() && !CueballWasPocketed() && !FoulCommitted)
 		{
 			GD.Print("Shot was legal");
 			return true;
@@ -238,7 +263,7 @@ public partial class Scoreboard : Node2D
 			GD.Print("One or more balls was struck");
 			return true;
 		}
-		GD.Print("No ball was struck");
+		MessageBox.PrintMessage("No ball was struck");
 		return false;
 	}
 
@@ -246,7 +271,7 @@ public partial class Scoreboard : Node2D
 	{
 		if (_pocketsThisShot.Any(b => b.IsCueball))
 		{
-			GD.Print("Cueball was pocketed");
+			MessageBox.PrintMessage("Cueball was pocketed");
 			return true;
 		}
 		return false;

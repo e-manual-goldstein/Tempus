@@ -31,7 +31,6 @@ public partial class Ball : RigidBody2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		GD.Print($"{GetType()} ready");
 		Sprite = GetChildren().OfType<Sprite2D>().First();
 	}
 	
@@ -58,16 +57,10 @@ public partial class Ball : RigidBody2D
 		{
 			EmitSignal(SignalName.Carom, otherBall);
 		}
-		else if (body is Pocket pocket)
-		{
-			GD.Print($"{this} pocketed in {pocket}");
-			GD.Print($"{(int)BallType} points!");			
-		}
 		else
 		{
 			GD.Print($"{this} collided with {body}");
-		}
-		//GD.Print($"{this} Collided with {body}");
+		}		
 	}
 
 	public void Clone(Ball otherBall)

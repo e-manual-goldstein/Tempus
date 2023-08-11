@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cng0ns32toxx8"]
+[gd_scene load_steps=14 format=3 uid="uid://cng0ns32toxx8"]
 
 [ext_resource type="Script" path="res://Main.cs" id="1"]
 [ext_resource type="Texture2D" uid="uid://c6t7qyn1p4cen" path="res://assets/sideCushionB.png" id="2"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dfx67w4twosp8" path="res://assets/ballWhite_10.png" id="10"]
 [ext_resource type="Texture2D" uid="uid://b36ra07th5g0u" path="res://assets/ballYellow_10.png" id="11"]
 [ext_resource type="PackedScene" uid="uid://bjgwfjvlb7bc1" path="res://Scoreboard.tscn" id="11_xs4ww"]
+[ext_resource type="PackedScene" uid="uid://djf6dp8paspdh" path="res://MessageLog.tscn" id="13_ux1ya"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -200,6 +201,7 @@ offset_bottom = 49.0
 [node name="HUD" parent="." instance=ExtResource("7")]
 
 [node name="Message" parent="HUD" index="0"]
+visible = false
 offset_left = 577.0
 offset_top = 94.0
 offset_right = -61.0
@@ -208,12 +210,16 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="StartButton" parent="HUD" index="1"]
-offset_left = 177.0
-offset_top = -445.0
-offset_right = 357.0
-offset_bottom = -345.0
+offset_left = 147.0
+offset_top = -572.0
+offset_right = 327.0
+offset_bottom = -472.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 40
+
+[node name="MessageLog" parent="." instance=ExtResource("13_ux1ya")]
+position = Vector2(566, 393)
 
 [connection signal="CueBallStruck" from="." to="Background/Border/Table/Balls" method="StrikeCueBall"]
 [connection signal="BallPocketed" from="Background/Border/Table/Pockets/TopRight" to="Background/Scoreboard" method="BallPocketed"]

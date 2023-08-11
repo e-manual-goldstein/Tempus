@@ -21,7 +21,7 @@ public partial class Main : Node2D
 	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");
 	//Cue Cue => GetChildren().OfType<Cue>().SingleOrDefault();
 	Balls Balls => GetNode<Balls>("Background/Border/Table/Balls");
-
+	MessageBox MessageLog => GetNode<MessageBox>("MessageLog/Panel/ScrollContainer/MessageBox");
 	public Dictionary<int, PlayerScorecard> Players { get; set; } = new Dictionary<int, PlayerScorecard>();
 
 	private PlayerScorecard CreateNewPlayer(string playerName, int playerScore = 0)
@@ -45,7 +45,7 @@ public partial class Main : Node2D
 
 	public void NewGame()
 	{
-		GD.Print("Starting New Game");
+		MessageBox.PrintMessage("Starting New Game");
 		Started = true;
 		Scoreboard.StartNewGame(Players);
 		Balls.ShotEnded += AddCueToScene;
@@ -78,4 +78,6 @@ public partial class Main : Node2D
 		GetNode<Timer>("MobTimer").Start();
 		GetNode<Timer>("ScoreTimer").Start();
 	}
+
+
 }

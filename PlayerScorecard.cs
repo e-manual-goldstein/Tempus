@@ -65,7 +65,7 @@ public partial class PlayerScorecard : Node2D
 	#endregion
 
 	#region Logic
-	
+
 	public int PlayerId { get; }
 
 	[Export]
@@ -73,6 +73,14 @@ public partial class PlayerScorecard : Node2D
 
 	[Export]
 	public int PlayerScore { get; set; }
+
+	public bool IsFirstShot { get; set; }
+
+	internal void StartTurn()
+	{
+		MessageBox.PrintMessage($"{PlayerName}, Your Shot!");
+		IsFirstShot = true;
+	}
 
 	#endregion
 
