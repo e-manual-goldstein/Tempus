@@ -202,7 +202,7 @@ public partial class Scoreboard : Node2D
 		MessageBox.PrintMessage("End of Turn");
 		if (!shotWasLegal)
 		{
-			MessageBox.PrintMessage($"Shot was illegal, lost {TurnScore} points");
+			MessageBox.PrintMessage($"Foul committed, lost {TurnScore} points");
 		}
 		else
 		{

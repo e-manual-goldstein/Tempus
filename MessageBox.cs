@@ -17,6 +17,8 @@ public partial class MessageBox : VBoxContainer
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		var scrollbar = Parent.GetVScrollBar();
+		Parent.ScrollVertical = (int)scrollbar.MaxValue;
 	}
 
 	public void ShowMessage(string message)
@@ -24,8 +26,6 @@ public partial class MessageBox : VBoxContainer
 		var label = new Label() { Text = message };
 		label.Size = new Vector2(Size.X, 20);
 		AddChild(label);
-		var scrollbar = Parent.GetVScrollBar();
-		Parent.ScrollVertical = (int)scrollbar.MaxValue;
 	}
 
 	private static event Action<string> MessageReceived;

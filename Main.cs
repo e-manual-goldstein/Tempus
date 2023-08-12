@@ -13,9 +13,7 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
-		CreateNewPlayer("Kevin");
-		CreateNewPlayer("Amy");
-		CreateNewPlayer("Dog");
+		
 	}
 
 	Scoreboard Scoreboard => GetNode<Scoreboard>("Background/Scoreboard");
@@ -24,12 +22,11 @@ public partial class Main : Node2D
 	MessageBox MessageLog => GetNode<MessageBox>("MessageLog/Panel/ScrollContainer/MessageBox");
 	public Dictionary<int, PlayerScorecard> Players { get; set; } = new Dictionary<int, PlayerScorecard>();
 
-	private PlayerScorecard CreateNewPlayer(string playerName, int playerScore = 0)
+	private PlayerScorecard CreateNewPlayer(string playerName)
 	{
 		PackedScene playerScene = (PackedScene)ResourceLoader.Load("res://PlayerScorecard.tscn");
 		var player = playerScene.Instantiate() as PlayerScorecard;
 		player.PlayerName = playerName;
-		player.PlayerScore = playerScore;
 		Players[player.PlayerId] = player;
 		Scoreboard.PlayerAdded(player, Players.Count);
 		return player;
@@ -43,8 +40,9 @@ public partial class Main : Node2D
 		RemoveCueFromScene(cue);
 	}
 
-	public void NewGame()
+	public void StartNewGame(string[] playerNames)
 	{
+		AddPlayers(playerNames);
 		MessageBox.PrintMessage("Starting New Game");
 		Started = true;
 		Scoreboard.StartNewGame(Players);
@@ -52,6 +50,14 @@ public partial class Main : Node2D
 		var hud = GetNode<HUD>("HUD");
 		hud.ShowMessage("Get Ready!");
 		AddCueToScene(Balls);
+	}
+
+	private void AddPlayers(string[] playerNames)
+	{
+		foreach (var playerName in playerNames)
+		{
+			CreateNewPlayer(playerName);
+		}
 	}
 
 	private void AddCueToScene(Balls balls)
@@ -79,5 +85,14 @@ public partial class Main : Node2D
 		GetNode<Timer>("ScoreTimer").Start();
 	}
 
+	public void ShowPlayerNameDialog()
+	{
+		PackedScene dialogScene = (PackedScene)ResourceLoader.Load("res://EnterPlayerNames.tscn");
+		var dialog = dialogScene.Instantiate() as EnterPlayerNames;
+		dialog.ZIndex = 3;
+		dialog.StartButtonPressed += StartNewGame;
+		AddChild(dialog);
+	}
 
 }
+

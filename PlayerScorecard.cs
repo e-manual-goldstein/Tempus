@@ -74,7 +74,26 @@ public partial class PlayerScorecard : Node2D
 	[Export]
 	public int PlayerScore { get; set; }
 
-	public bool IsFirstShot { get; set; }
+	bool _firstShot;
+	public bool IsFirstShot 
+	{
+		get
+		{
+			return _firstShot;
+		}
+		set
+		{
+			if (value)
+			{
+				_firstShot = true;
+			}
+			else
+			{
+				_firstShot = false;
+
+			}
+		}
+	}
 
 	internal void StartTurn()
 	{
