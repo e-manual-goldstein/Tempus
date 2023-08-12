@@ -187,11 +187,11 @@ public partial class Scoreboard : Node2D
 		UpdateScoreLabel(TurnScore);
 		var shotWasLegal = ShotWasLegal();
 
+		CurrentPlayer().IsFirstShot = false;
 		if (!shotWasLegal || !PointsScored())
 		{
 			EndTurn(shotWasLegal);
 		}
-		CurrentPlayer().IsFirstShot = false;
 		ResetPocketed(balls);
 		ResetCaroms();
 		FoulCommitted = false;
